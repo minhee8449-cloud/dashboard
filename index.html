@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>민희의 하루 대시보드</title>
+  <style>
+    :root{
+      --bg:#f7f3ec;
+      --card:#fffdf9;
+      --ink:#3d352e;
+      --muted:#8b8177;
+      --accent:#a67c52;
+      --accent-2:#d9c4aa;
+      --line:#eadfD2;
+      --shadow:0 10px 30px rgba(86,65,44,.08);
+      --danger:#b25d5d;
+      --green:#708f6b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Pretendard","Noto Sans KR",system-ui,-apple-system,sans-serif;
+      background:linear-gradient(180deg,#fbf8f3 0%,#f4eee5 100%);
+      color:var(--ink);
+    }
+    .wrap{max-width:1240px;margin:0 auto;padding:28px 20px 50px}
+    header{
+      display:flex;justify-content:space-between;align-items:center;
+      gap:18px;margin-bottom:24px;
+    }
+    .brand h1{margin:0;font-size:clamp(26px,4vw,42px);letter-spacing:-1.2px}
+    .brand p{margin:8px 0 0;color:var(--muted)}
+    .datebox{
+      background:var(--card);border:1px solid var(--line);border-radius:18px;
+      padding:14px 18px;box-shadow:var(--shadow);min-width:210px;text-align:right
+    }
+    .datebox .date{font-weight:700}
+    .datebox .clock{font-size:28px;margin-top:4px;color:var(--accent)}
+    .grid{
+      display:grid;grid-template-columns:repeat(12,1fr);gap:18px;
+    }
+    .card{
+      background:var(--card);border:1px solid var(--line);border-radius:22px;
+      padding:20px;box-shadow:var(--shadow);
+    }
+    .span-12{grid-column:span 12}.span-8{grid-column:span 8}
+    .span-7{grid-column:span 7}.span-6{grid-column:span 6}
+    .span-5{grid-column:span 5}.span-4{grid-column:span 4}
+    .card h2{margin:0 0 14px;font-size:19px;display:flex;align-items:center;gap:8px}
+    .sub{color:var(--muted);font-size:13px;margin-top:-6px;margin-bottom:14px}
+    .links{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px
+    }
+    .link-card{
+      position:relative;display:block;text-decoration:none;color:var(--ink);
+      border:1px solid var(--line);border-radius:16px;padding:16px;
+      background:#fff;transition:.2s ease;min-height:92px;
+    }
+    .link-card:hover{transform:translateY(-2px);border-color:var(--accent-2);box-shadow:0 8px 20px rgba(86,65,44,.08)}
+    .link-icon{font-size:24px}.link-title{font-weight:700;margin-top:8px}
+    .link-desc{font-size:12px;color:var(--muted);margin-top:4px}
+    .edit-link{
+      position:absolute;right:9px;top:8px;border:0;background:transparent;
+      color:var(--muted);cursor:pointer;font-size:14px
+    }
+    .todo-row,.list-row{
+      display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px dashed var(--line)
+    }
+    .todo-row:last-child,.list-row:last-child{border-bottom:0}
+    input[type="checkbox"]{width:18px;height:18px;accent-color:var(--accent)}
+    .todo-row.done .todo-text{text-decoration:line-through;color:#aaa}
+    .grow{flex:1}
+    button{
+      font:inherit;border:0;border-radius:12px;padding:9px 12px;cursor:pointer
+    }
+    .btn{background:var(--accent);color:white}
+    .btn-soft{background:#efe5d8;color:var(--ink)}
+    .btn-ghost{background:transparent;color:var(--muted)}
+    .delete{color:var(--danger);background:transparent;padding:4px 6px}
+    .input-row{display:flex;gap:8px;margin-top:12px}
+    .input-row input,.input-row textarea,.modal input,.modal textarea{
+      width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;
+      padding:11px 12px;color:var(--ink);outline:none
+    }
+    textarea{min-height:130px;resize:vertical}
+    .progress-wrap{display:flex;gap:16px;align-items:center}
+    .progress{
+      flex:1;height:14px;background:#eee7dd;border-radius:999px;overflow:hidden
+    }
+    .progress > div{height:100%;background:linear-gradient(90deg,var(--accent),#c89f75);width:0}
+    .status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+    .status{padding:12px;border:1px solid var(--line);border-radius:14px;text-align:center;background:#fff}
+    .status strong{display:block;font-size:20px;color:var(--accent)}
+    .pill{
+      display:inline-block;padding:6px 10px;border-radius:999px;background:#edf2ea;
+      color:var(--green);font-size:12px;font-weight:700
+    }
+    .note{width:100%;min-height:160px}
+    .footer{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+    .modal-backdrop{
+      position:fixed;inset:0;background:rgba(40,30,20,.35);display:none;
+      align-items:center;justify-content:center;padding:20px;z-index:1000
+    }
+    .modal{
+      width:min(520px,100%);background:var(--card);border-radius:20px;padding:22px;
+      box-shadow:0 20px 60px rgba(0,0,0,.2)
+    }
+    .modal h3{margin-top:0}
+    .modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+    @media(max-width:900px){
+      .span-8,.span-7,.span-6,.span-5,.span-4{grid-column:span 12}
+      header{align-items:flex-start;flex-direction:column}
+      .datebox{width:100%;text-align:left}
+      .status-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <h1>민희의 하루 대시보드</h1>
+        <p>업무, 블로그, 영어공부와 가족 계획을 한곳에서 관리해요.</p>
+      </div>
+      <div class="datebox">
+        <div class="date" id="today"></div>
+        <div class="clock" id="clock"></div>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card span-12">
+        <h2>🚢 업무 바로가기</h2>
+        <p class="sub">연필 버튼을 눌러 실제 주소를 저장하면 다음에도 그대로 유지됩니다.</p>
+        <div class="links" id="workLinks"></div>
+      </section>
+
+      <section class="card span-7">
+        <h2>✅ 오늘 체크리스트</h2>
+        <div id="todoList"></div>
+        <div class="input-row">
+          <input id="todoInput" placeholder="새 할 일을 입력하세요" />
+          <button class="btn" onclick="addTodo()">추가</button>
+        </div>
+      </section>
+
+      <section class="card span-5">
+        <h2>📊 디머리지 레포트 현황</h2>
+        <div class="progress-wrap">
+          <div class="progress"><div id="reportProgress"></div></div>
+          <strong id="progressText">0%</strong>
+        </div>
+        <div class="status-grid">
+          <div class="status"><strong id="mayAmount">16,722</strong><span>5월 수입</span></div>
+          <div class="status"><strong id="junAmount">82,063</strong><span>6월 수입</span></div>
+          <div class="status"><strong id="julAmount">53,766</strong><span>7월 수입</span></div>
+        </div>
+        <div style="margin-top:14px">
+          <label><input type="range" id="progressRange" min="0" max="100" value="35" style="width:100%"></label>
+        </div>
+      </section>
+
+      <section class="card span-6">
+        <h2>💡 아이디어 보드</h2>
+        <div id="ideaList"></div>
+        <div class="input-row">
+          <input id="ideaInput" placeholder="새 아이디어를 입력하세요" />
+          <button class="btn-soft" onclick="addIdea()">추가</button>
+        </div>
+      </section>
+
+      <section class="card span-6">
+        <h2>👨‍👩‍👧 아이들과 가보고 싶은 곳</h2>
+        <div id="placeList"></div>
+        <div class="input-row">
+          <input id="placeInput" placeholder="가보고 싶은 곳을 입력하세요" />
+          <button class="btn-soft" onclick="addPlace()">추가</button>
+        </div>
+      </section>
+
+      <section class="card span-4">
+        <h2>📝 블로그 프로젝트</h2>
+        <div class="list-row"><span class="pill">오늘의 한편</span></div>
+        <div class="list-row"><span>카테고리 정리</span></div>
+        <div class="list-row"><span>국립생물자원관 후기</span></div>
+        <div class="list-row"><span>다이소 동남아 여행 준비물</span></div>
+        <div class="list-row"><span>키즈팡팡 주방놀이 후기</span></div>
+      </section>
+
+      <section class="card span-4">
+        <h2>🗣️ 오늘의 영어 표현</h2>
+        <p><strong>I would appreciate it if you could provide your feedback.</strong></p>
+        <p class="sub">가능하시면 의견을 주시면 감사하겠습니다.</p>
+        <p><strong>Please let me know if you need any additional materials.</strong></p>
+        <p class="sub">추가 자료가 필요하시면 알려주세요.</p>
+      </section>
+
+      <section class="card span-4">
+        <h2>🔗 개인 바로가기</h2>
+        <div class="links" id="personalLinks"></div>
+      </section>
+
+      <section class="card span-12">
+        <h2>🗒️ 빠른 메모</h2>
+        <textarea id="quickNote" class="note" placeholder="업무 메모, 블로그 아이디어, 장보기 목록 등을 적어두세요. 자동 저장됩니다."></textarea>
+      </section>
+    </main>
+
+    <div class="footer">이 페이지의 체크리스트·메모·주소는 현재 브라우저에만 저장됩니다.</div>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <h3>바로가기 수정</h3>
+      <input id="modalTitle" placeholder="이름" />
+      <input id="modalUrl" placeholder="https://..." style="margin-top:10px" />
+      <textarea id="modalDesc" placeholder="설명" style="margin-top:10px;min-height:80px"></textarea>
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="closeModal()">취소</button>
+        <button class="btn" onclick="saveLink()">저장</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+const defaults = {
+  workLinks: [
+    {icon:"📦", title:"SAP", url:"#", desc:"월별 데이터·정산"},
+    {icon:"🧭", title:"PISA", url:"#", desc:"업무 시스템"},
+    {icon:"🚢", title:"eNIS", url:"#", desc:"선사 운영 시스템"},
+    {icon:"✉️", title:"Outlook", url:"https://outlook.office.com/", desc:"업무 메일"},
+    {icon:"💬", title:"Teams", url:"https://teams.microsoft.com/", desc:"팀 커뮤니케이션"},
+    {icon:"📊", title:"D&D Report", url:"#", desc:"디머리지 리포트"},
+    {icon:"🗒️", title:"업무 메모", url:"#memo", desc:"빠른 메모로 이동"},
+    {icon:"💱", title:"환율", url:"https://www.google.com/search?q=USD+KRW", desc:"USD/KRW 확인"}
+  ],
+  personalLinks: [
+    {icon:"📝", title:"네이버 블로그", url:"https://blog.naver.com/nya848", desc:"오늘의 한편"},
+    {icon:"🌐", title:"GitHub", url:"https://github.com/", desc:"대시보드 배포"},
+    {icon:"🎧", title:"영어 공부", url:"#", desc:"듣기·말하기"},
+    {icon:"🗺️", title:"가족 나들이", url:"#", desc:"가보고 싶은 곳"}
+  ],
+  todos:[
+    {text:"7월 Demurrage Report 작성",done:false},
+    {text:"블로그 카테고리 정리",done:false},
+    {text:"영어 10분",done:false},
+    {text:"GitHub Pages에 대시보드 올리기",done:false}
+  ],
+  ideas:["사업자번호 매칭","위임장 기한 알림 설정","업무 자동화 아이디어"],
+  places:["리틀인천안전시티","한국잡월드"]
+};
+
+const load=(k,d)=>JSON.parse(localStorage.getItem(k)||JSON.stringify(d));
+const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+
+let workLinks=load("workLinks",defaults.workLinks);
+let personalLinks=load("personalLinks",defaults.personalLinks);
+let todos=load("todos",defaults.todos);
+let ideas=load("ideas",defaults.ideas);
+let places=load("places",defaults.places);
+let editing={group:null,index:null};
+
+function tick(){
+  const now=new Date();
+  document.getElementById("today").textContent=now.toLocaleDateString("ko-KR",{year:"numeric",month:"long",day:"numeric",weekday:"long"});
+  document.getElementById("clock").textContent=now.toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});
+}
+tick(); setInterval(tick,1000);
+
+function renderLinks(group){
+  const data=group==="work"?workLinks:personalLinks;
+  const el=document.getElementById(group==="work"?"workLinks":"personalLinks");
+  el.innerHTML=data.map((x,i)=>`
+    <a class="link-card" href="${x.url||'#'}" target="${x.url&&x.url.startsWith('http')?'_blank':'_self'}">
+      <button class="edit-link" onclick="event.preventDefault();event.stopPropagation();openModal('${group}',${i})">✎</button>
+      <div class="link-icon">${x.icon}</div>
+      <div class="link-title">${x.title}</div>
+      <div class="link-desc">${x.desc||''}</div>
+    </a>`).join("");
+}
+renderLinks("work"); renderLinks("personal");
+
+function openModal(group,index){
+  editing={group,index};
+  const data=group==="work"?workLinks:personalLinks;
+  const x=data[index];
+  modalTitle.value=x.title; modalUrl.value=x.url; modalDesc.value=x.desc||"";
+  modalBackdrop.style.display="flex";
+}
+function closeModal(){modalBackdrop.style.display="none"}
+function saveLink(){
+  const data=editing.group==="work"?workLinks:personalLinks;
+  data[editing.index]={...data[editing.index],title:modalTitle.value.trim()||data[editing.index].title,url:modalUrl.value.trim()||"#",desc:modalDesc.value.trim()};
+  if(editing.group==="work"){save("workLinks",workLinks);renderLinks("work")}
+  else{save("personalLinks",personalLinks);renderLinks("personal")}
+  closeModal();
+}
+modalBackdrop.addEventListener("click",e=>{if(e.target===modalBackdrop)closeModal()});
+
+function renderTodos(){
+  todoList.innerHTML=todos.map((t,i)=>`
+    <div class="todo-row ${t.done?'done':''}">
+      <input type="checkbox" ${t.done?'checked':''} onchange="toggleTodo(${i})">
+      <span class="todo-text grow">${t.text}</span>
+      <button class="delete" onclick="deleteTodo(${i})">삭제</button>
+    </div>`).join("");
+}
+function addTodo(){const v=todoInput.value.trim();if(!v)return;todos.push({text:v,done:false});todoInput.value="";save("todos",todos);renderTodos()}
+function toggleTodo(i){todos[i].done=!todos[i].done;save("todos",todos);renderTodos()}
+function deleteTodo(i){todos.splice(i,1);save("todos",todos);renderTodos()}
+renderTodos();
+
+function renderSimple(list,elId,type){
+  document.getElementById(elId).innerHTML=list.map((x,i)=>`
+    <div class="list-row"><span class="grow">${x}</span><button class="delete" onclick="deleteSimple('${type}',${i})">삭제</button></div>`).join("");
+}
+function addIdea(){const v=ideaInput.value.trim();if(!v)return;ideas.push(v);ideaInput.value="";save("ideas",ideas);renderSimple(ideas,"ideaList","ideas")}
+function addPlace(){const v=placeInput.value.trim();if(!v)return;places.push(v);placeInput.value="";save("places",places);renderSimple(places,"placeList","places")}
+function deleteSimple(type,i){
+  if(type==="ideas"){ideas.splice(i,1);save("ideas",ideas);renderSimple(ideas,"ideaList","ideas")}
+  else{places.splice(i,1);save("places",places);renderSimple(places,"placeList","places")}
+}
+renderSimple(ideas,"ideaList","ideas"); renderSimple(places,"placeList","places");
+
+quickNote.value=localStorage.getItem("quickNote")||"";
+quickNote.addEventListener("input",()=>localStorage.setItem("quickNote",quickNote.value));
+
+const range=document.getElementById("progressRange");
+range.value=localStorage.getItem("reportProgress")||35;
+function updateProgress(){reportProgress.style.width=range.value+"%";progressText.textContent=range.value+"%";localStorage.setItem("reportProgress",range.value)}
+range.addEventListener("input",updateProgress);updateProgress();
+
+document.querySelector('a[href="#memo"]')?.addEventListener("click",e=>{
+  e.preventDefault();quickNote.scrollIntoView({behavior:"smooth"});
+});
+</script>
+</body>
+</html>
