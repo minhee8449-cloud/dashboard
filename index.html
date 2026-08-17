@@ -78,12 +78,13 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
 .check-box h4{margin:0 0 10px}.mini-row{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px dashed #e7ebf0}.mini-row:last-child{border-bottom:0}
 .note{width:100%;min-height:150px;resize:vertical}
 .metric{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metric div{padding:14px;border:1px solid var(--line);border-radius:14px;text-align:center}.metric strong{font-size:22px;color:#2d6dbb;display:block}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.news-item{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff}.news-item h4{margin:7px 0 8px}.news-item p{font-size:13px;line-height:1.6;color:#536175;margin:6px 0}.level{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800}.level.red{background:#ffe9e9;color:#b53939}.level.orange{background:#fff1df;color:#b56a16}.level.green{background:#e8f7ef;color:#26744f}.source{font-size:11px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:10px}.budget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.budget-box{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff}.budget-box label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}.budget-box input{width:100%;font-size:20px;font-weight:800}.budget-total{font-size:32px;font-weight:900;color:#2d6dbb}.budget-note{font-size:12px;color:var(--muted);line-height:1.6}
 .modal-bg{position:fixed;inset:0;background:rgba(8,25,45,.42);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
 .modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:20px;box-shadow:0 25px 70px rgba(0,0,0,.25)}
 .modal h3{margin-top:0}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
 .small{font-size:12px;color:var(--muted)}
 @media(max-width:1100px){.app{grid-template-columns:88px 1fr}.brand h1,.brand small,.nav span,.sidebar-foot{display:none}.brand{justify-content:center}.nav button{text-align:center;font-size:0}.nav button::first-letter{font-size:20px}.port-groups{grid-template-columns:1fr 1fr}.template-grid{grid-template-columns:1fr}.col-8,.col-7,.col-6,.col-5,.col-4,.col-3{grid-column:span 12}}
-@media(max-width:720px){.app{display:block}.sidebar{position:static;height:auto;padding:10px}.brand{display:none}.nav{grid-template-columns:repeat(5,1fr)}.nav button{padding:10px 5px}.topbar{padding:0 15px}.clock{display:none}.content{padding:16px}.week-grid,.check-columns,.port-groups{grid-template-columns:1fr}.grid{gap:12px}.travel-head{align-items:flex-start;flex-direction:column}}
+@media(max-width:720px){.app{display:block}.sidebar{position:static;height:auto;padding:10px}.brand{display:none}.nav{grid-template-columns:repeat(6,1fr)}.nav button{padding:10px 5px}.topbar{padding:0 15px}.clock{display:none}.content{padding:16px}.week-grid,.check-columns,.port-groups,.news-grid,.budget-grid{grid-template-columns:1fr}.grid{gap:12px}.travel-head{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
@@ -96,6 +97,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
       <button data-page="blog">📝 <span>블로그</span></button>
       <button data-page="english">🔤 <span>영어</span></button>
       <button data-page="ideas">💡 <span>아이디어</span></button>
+      <button data-page="budget">💳 <span>가계부</span></button>
     </div>
     <div class="sidebar-foot">GitHub Pages용 · 체크리스트와 메모는 현재 브라우저에만 저장됩니다.</div>
   </aside>
@@ -166,26 +168,29 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
           <button class="tab" data-panel-group="family" data-panel="family-schedule">가족 일정</button>
           <button class="tab" data-panel-group="family" data-panel="family-kids">첫째 · 둘째</button>
           <button class="tab" data-panel-group="family" data-panel="family-shopping">가족 쇼핑</button>
+          <button class="tab" data-panel-group="family" data-panel="family-montessori">놀이몬테소리</button>
         </div>
 
         <div id="family-week" class="panel active">
           <div class="card">
-            <div class="section-title"><div><h3>📚 이번 주 아이 성장 가이드</h3><div class="desc">현재 연령과 알려준 성향을 반영한 주간 가이드입니다. 다음 주에는 새 내용으로 교체해 사용할 수 있어요.</div></div><span class="badge">이번 주</span></div>
+            <div class="section-title"><div><h3>📚 이번 주 아이 성장 가이드</h3><div class="desc">2026-08-18 주간 업데이트 · 학습량 추가보다 생활 속 반복과 ‘내가 해냈다’ 경험을 우선합니다.</div></div><span class="badge">8/18 주간</span></div>
             <div class="week-grid">
               <div class="child-card">
                 <h4>👦 첫째 · 7세</h4>
-                <div class="tip"><b>추천 책</b><small>공룡·과학처럼 관심 분야의 정보책 1권 + 이야기책 1권. 책을 읽고 “가장 기억나는 장면”을 한 문장으로 말해보기.</small></div>
-                <div class="tip"><b>놀이·학습</b><small>종이접기 순서 따라 하기, 수영 전후 준비물을 아이가 직접 체크하기, 짧은 파닉스 복습 10분.</small></div>
-                <div class="tip"><b>영양</b><small>물 마시는 횟수를 늘리고, 과일·채소·통곡물 등 섬유질 식품을 식사에 조금씩 추가하기. 변비가 지속되면 의료진과 상의하기.</small></div>
-                <div class="tip"><b>이번 주 관찰</b><small>배변 횟수와 통증, 영어 수업 집중도, 수영 후 피로도를 간단히 기록하기.</small></div>
+                <div class="tip"><b>① 발달 포인트</b><small>자기조절·계획·설명하는 힘을 키우는 시기. 문제집을 더 늘리기보다 “뭐부터 할래?”처럼 스스로 순서를 정하고 끝내는 경험을 주세요.</small></div>
+                <div class="tip"><b>② 추천 놀이 3</b><small>공룡 두 마리 같은 점/다른 점 찾기 · 종이접기 선생님 되어 순서 설명하기 · 10분 몸 미션(점프/공/한발서기).</small></div>
+                <div class="tip"><b>③ 영양</b><small>아침 단백질 1가지(달걀·두부·요거트 등) + 물 + 과일·채소 반복 노출. 변비는 횟수보다 변의 굵기·딱딱함·통증·참는 행동을 같이 봅니다.</small></div>
+                <div class="tip"><b>④ 건강 관찰</b><small>비염이 심한 날 코골이·입벌림 수면·낮 피로를 확인. 영구치가 많이 올라왔는데 유치가 거의 흔들리지 않으면 소아치과 확인을 고려합니다.</small></div>
+                <div class="tip"><b>⑤ 이번 주 미션</b><small>하루 한 번 ‘오늘 할 것 3개 순서 직접 정하기’. 눈높이·독서·자유놀이처럼 기존 일정 안에서 선택권을 주세요.</small></div>
                 <textarea class="note child-note" data-key="firstWeekNote" placeholder="첫째 반응 메모"></textarea>
               </div>
               <div class="child-card">
                 <h4>👧 둘째 · 18개월</h4>
-                <div class="tip"><b>추천 그림책</b><small>생활 동작·동물 소리·반복 문장이 있는 보드북. 한 번에 길게 읽기보다 같은 책을 짧게 반복하기.</small></div>
-                <div class="tip"><b>놀이·장난감</b><small>물 나오는 싱크대 놀이, 넣고 빼기 상자, 큰 블록, 끌고 다니는 장난감처럼 움직임과 모방을 함께 쓰는 놀이.</small></div>
-                <div class="tip"><b>영양</b><small>고기·생선 선호를 활용해 채소를 잘게 섞고, 비타민 D는 현재 복용량을 제품·의료진 지침에 맞춰 유지하기.</small></div>
-                <div class="tip"><b>이번 주 관찰</b><small>새 단어·몸짓, 계단에서 균형 잡는 모습, 채소를 받아들이는 형태를 기록하기.</small></div>
+                <div class="tip"><b>① 발달 포인트</b><small>단어 수만 세기보다 가리키기·모방·간단한 지시 이해·의사표현을 함께 관찰. “말해봐”보다 아이 행동에 짧은 말을 붙여주세요.</small></div>
+                <div class="tip"><b>② 추천 놀이 3</b><small>양말 심부름 · 인형 외출놀이 · 엄마 따라 닦기. 새 교구보다 이미 좋아하는 생활 모방을 언어놀이로 확장합니다.</small></div>
+                <div class="tip"><b>③ 영양</b><small>고기·생선은 잘 먹으므로 이번 주는 채소·과일을 ‘먹이기’보다 소량 반복 노출. 칼슘은 우유뿐 아니라 요거트·두부 등으로 다양화합니다.</small></div>
+                <div class="tip"><b>④ 건강 관찰</b><small>최근 회복 후 식욕·소변·활동량·변이 평소 수준인지 확인. 18개월 발달은 말·놀이·움직임·사회적 반응을 함께 봅니다.</small></div>
+                <div class="tip"><b>⑤ 이번 주 미션</b><small>생활언어 “주세요” 하나를 자주 들려주기. 정확히 따라 말하게 하기보다 의사표현 → 짧은 언어 → 원하는 결과가 연결되게 해주세요.</small></div>
                 <textarea class="note child-note" data-key="secondWeekNote" placeholder="둘째 반응 메모"></textarea>
               </div>
             </div>
@@ -210,6 +215,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
         <div id="family-schedule" class="panel"><div class="card"><h3>📅 가족 일정</h3><div id="scheduleList" class="list"></div><div class="toolbar"><input id="scheduleDate" type="date"><input id="scheduleInput" style="flex:1" placeholder="병원, 문화센터, 여행 일정"><button class="btn" onclick="addSchedule()">추가</button></div></div></div>
         <div id="family-kids" class="panel"><div class="grid"><div class="card col-6"><h3>👦 첫째 기록</h3><textarea id="firstMemo" class="note" placeholder="수영, 영어, 건강, 학교 준비 메모"></textarea></div><div class="card col-6"><h3>👧 둘째 기록</h3><textarea id="secondMemo" class="note" placeholder="성장, 놀이, 어린이집, 건강 메모"></textarea></div></div></div>
         <div id="family-shopping" class="panel"><div class="card"><h3>🛒 가족 쇼핑</h3><div id="familyShopList" class="list"></div><div class="toolbar"><input id="familyShopInput" style="flex:1" placeholder="살 물건 추가"><button class="btn pink" onclick="addFamilyShop()">추가</button></div></div></div>
+        <div id="family-montessori" class="panel"><div class="card"><div class="section-title"><h3>🧺 놀이몬테소리</h3><span class="badge">생활 속 10분</span></div><div class="week-grid"><div class="child-card"><h4>👦 7세</h4><div class="tip"><b>생활 독립</b><small>수영가방 준비·빨래 분류·간식 접시 준비처럼 실제 생활 일을 순서대로 맡기기.</small></div><div class="tip"><b>집중 활동</b><small>종이접기나 분류 놀이를 ‘완성→정리’까지 한 사이클로 끝내기.</small></div></div><div class="child-card"><h4>👧 18개월</h4><div class="tip"><b>옮기기</b><small>큰 스푼으로 마른 재료 옮기기, 수건 바구니 넣기. 삼킴 위험 없는 큰 재료만 사용하고 옆에서 지켜보기.</small></div><div class="tip"><b>닦기·정리</b><small>마른 수건으로 테이블 닦기, 장난감 2~3개 바구니에 넣기처럼 성공이 빠른 실제 일을 주세요.</small></div></div></div><textarea id="montessoriMemo" class="note" placeholder="이번 주 해본 놀이 / 반응 / 다음에 해볼 것"></textarea></div></div>
       </section>
 
       <section id="blog" class="page">
@@ -225,6 +231,24 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
       <section id="ideas" class="page">
         <div class="hero"><h3>💡 아이디어 보드</h3><p>업무·블로그·가족 아이디어를 잊지 않게 저장해요.</p></div>
         <div class="card"><div id="ideaList" class="list"></div><div class="toolbar"><input id="ideaInput" style="flex:1" placeholder="새 아이디어"><button class="btn" onclick="addIdea()">추가</button></div></div>
+      </section>
+
+      <section id="budget" class="page">
+        <div class="hero"><h3>💳 우리집 가계부</h3><p>최근 지출 흐름을 보고, 월별 생활비 목표와 실제 지출을 간단히 관리해요.</p></div>
+        <div class="grid">
+          <div class="card col-12">
+            <div class="section-title"><div><h3>📊 최근 3개월 지출</h3><div class="desc">예전에 공유한 카드/지출 화면의 단순 합산 대략치 · 만원 단위 · 경조사비 제외. 실제 소비와 자금이동은 직접 조정해 주세요.</div></div><span class="badge">수정 가능</span></div>
+            <div class="budget-grid">
+              <div class="budget-box"><label>2026년 4월</label><input id="budgetApr" type="number" min="0" value="676"><div class="small">만원</div></div>
+              <div class="budget-box"><label>2026년 5월</label><input id="budgetMay" type="number" min="0" value="977"><div class="small">만원</div></div>
+              <div class="budget-box"><label>2026년 6월</label><input id="budgetJun" type="number" min="0" value="962"><div class="small">만원</div></div>
+            </div>
+            <div style="margin-top:16px" class="metric"><div><strong id="budgetAvg">-</strong><small>3개월 평균(만원)</small></div><div><strong id="budgetMax">-</strong><small>최고 지출(만원)</small></div><div><strong id="budgetGap">-</strong><small>월 목표 대비 평균 차이</small></div></div>
+          </div>
+          <div class="card col-6"><h3>🎯 월 생활비 목표</h3><div class="desc">현재 월 지출 800~900만원대를 기준으로 줄이고 싶은 목표를 직접 설정해요.</div><div class="budget-box"><label>목표 생활비 (만원)</label><input id="budgetTarget" type="number" min="0" value="800"></div><p class="budget-note">경조사비·대출상환·저축/투자·카드대금 이체 등은 실제 생활소비와 분리해서 보는 것이 좋아요.</p></div>
+          <div class="card col-6"><h3>🧾 이번 달 메모</h3><textarea id="budgetMemo" class="note" placeholder="고정비 / 식비 / 쇼핑 / 여행 / 교육비 / 줄이고 싶은 항목"></textarea></div>
+          <div class="card col-12"><h3>✅ 이번 달 체크</h3><div class="check-columns"><div class="check-box"><h4>먼저 확인</h4><label class="mini-row"><input class="checkbox budget-check" data-key="fixed" type="checkbox"><span>고정비와 변동비 분리</span></label><label class="mini-row"><input class="checkbox budget-check" data-key="transfer" type="checkbox"><span>카드대금·저축 등 자금이동 제외</span></label></div><div class="check-box"><h4>과소비 점검</h4><label class="mini-row"><input class="checkbox budget-check" data-key="food" type="checkbox"><span>식비·배달비 확인</span></label><label class="mini-row"><input class="checkbox budget-check" data-key="shopping" type="checkbox"><span>쇼핑/생활용품 확인</span></label></div><div class="check-box"><h4>다음 달 준비</h4><label class="mini-row"><input class="checkbox budget-check" data-key="event" type="checkbox"><span>여행·행사성 지출 따로 표시</span></label><label class="mini-row"><input class="checkbox budget-check" data-key="review" type="checkbox"><span>월말 실제 소비액 확정</span></label></div></div></div>
+        </div>
       </section>
 
     </div>
@@ -244,7 +268,8 @@ const pageMeta={
  family:["가족 포털","아이 성장, 여행 준비, 일정과 쇼핑을 관리해요."],
  blog:["블로그 포털","오늘의 한편 글감과 진행 상태를 관리해요."],
  english:["영어 포털","업무 표현과 복습 내용을 모아두어요."],
- ideas:["아이디어 보드","떠오른 생각을 바로 저장해요."]
+ ideas:["아이디어 보드","떠오른 생각을 바로 저장해요."],
+ budget:["가계부","최근 지출 흐름과 월 생활비 목표를 관리해요."]
 };
 $$(".nav button").forEach(b=>b.onclick=()=>{ $$(".nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");$$(".page").forEach(x=>x.classList.remove("active"));$("#"+b.dataset.page).classList.add("active");$("#pageTitle").textContent=pageMeta[b.dataset.page][0];$("#pageSubtitle").textContent=pageMeta[b.dataset.page][1]});
 function tick(){const n=new Date();$("#clock").textContent=n.toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});$("#today").textContent=n.toLocaleDateString("ko-KR",{year:"numeric",month:"long",day:"numeric",weekday:"long"})} tick();setInterval(tick,1000);
@@ -265,7 +290,7 @@ function renderWork(){
 function openWork(i){const x=workLinks[i];if(x.url&&x.url!="#")window.open(x.url,"_blank");else if(x.action==="ports")$("#port-main").scrollIntoView();else if(x.action==="templates")$("#templateSearch").scrollIntoView();else if(x.action==="memo")$("#workMemoCard").scrollIntoView()}
 function editWork(i){openModal("바로가기 수정",`<input id="mIcon" value="${workLinks[i].icon}"><input id="mTitle2" value="${workLinks[i].title}" style="margin-top:8px"><input id="mDesc" value="${workLinks[i].desc}" style="margin-top:8px"><input id="mUrl" value="${workLinks[i].url||""}" placeholder="https://..." style="margin-top:8px">`,()=>{workLinks[i].icon=$("#mIcon").value;workLinks[i].title=$("#mTitle2").value;workLinks[i].desc=$("#mDesc").value;workLinks[i].url=$("#mUrl").value||workLinks[i].url;set("v2WorkLinks",workLinks);renderWork()})} renderWork();
 
-let todos=get("v2Todos",get("todos",[{text:"D&D Report 확인",done:false},{text:"Outlook 메일 확인",done:false},{text:"메일 템플릿 정리",done:false}]));
+let todos=get("v2Todos",get("todos",[{text:"D&D Report 확인",done:false},{text:"해운동향 뉴스 확인",done:false},{text:"Outlook 메일 확인",done:false},{text:"첫째 눈높이 숙제 확인",done:false},{text:"독서통장 확인",done:false},{text:"씽씽앱 확인",done:false}]));
 function renderTodos(){todoList.innerHTML=todos.map((x,i)=>`<div class="row ${x.done?"done":""}"><input class="checkbox" type="checkbox" ${x.done?"checked":""} onchange="todos[${i}].done=this.checked;set('v2Todos',todos);renderTodos()"><span class="txt">${x.text}</span><button class="delete" onclick="todos.splice(${i},1);set('v2Todos',todos);renderTodos()">삭제</button></div>`).join("")}
 function addTodo(){let v=todoInput.value.trim();if(!v)return;todos.push({text:v,done:false});todoInput.value="";set("v2Todos",todos);renderTodos()}renderTodos();
 
@@ -292,7 +317,7 @@ renderTemplates();
 demRange.value=localStorage.getItem("v2DemProgress")||100;function updateDem(){demBar.style.width=demRange.value+"%";demText.textContent=demRange.value+"%";localStorage.setItem("v2DemProgress",demRange.value)}demRange.oninput=updateDem;updateDem();
 
 function autoText(id,key){const el=$("#"+id);el.value=localStorage.getItem(key)||"";el.oninput=()=>localStorage.setItem(key,el.value)}
-autoText("workMemo","v2WorkMemo");autoText("firstMemo","v2FirstMemo");autoText("secondMemo","v2SecondMemo");autoText("blogMemo","v2BlogMemo");autoText("englishMemo","v2EnglishMemo");
+autoText("workMemo","v2WorkMemo");autoText("shippingMemo","v2ShippingMemo");autoText("firstMemo","v2FirstMemo");autoText("secondMemo","v2SecondMemo");autoText("montessoriMemo","v2MontessoriMemo");autoText("blogMemo","v2BlogMemo");autoText("englishMemo","v2EnglishMemo");autoText("budgetMemo","v2BudgetMemo");
 $$(".child-note").forEach(el=>{el.value=localStorage.getItem(el.dataset.key)||"";el.oninput=()=>localStorage.setItem(el.dataset.key,el.value)});
 
 const checklistDefaults={
@@ -341,6 +366,13 @@ function closeModal(){modalBg.style.display="none"}modalBg.onclick=e=>{if(e.targ
 function addCustomPort(){openModal("항만 사이트 추가",`<select id="mPort"><option value="busan">부산</option><option value="incheon">인천</option><option value="gwangyang">광양</option></select><input id="mName" placeholder="사이트 이름" style="margin-top:8px"><input id="mLink" placeholder="https://..." style="margin-top:8px">`,()=>{let arr=get("v2CustomPorts",[]);arr.push({port:mPort.value,name:mName.value,url:mLink.value});set("v2CustomPorts",arr);renderCustomPorts()})}
 function renderCustomPorts(){let arr=get("v2CustomPorts",[]);["busan","incheon","gwangyang"].forEach(p=>{$("#custom"+p[0].toUpperCase()+p.slice(1)).innerHTML=arr.filter(x=>x.port===p).map(x=>`<a class="port-link" target="_blank" href="${x.url}">${x.name}</a>`).join("")})}
 function editQuickLink(type){openModal("인천항 사이트 주소 등록",`<input id="mName" value="인천항 선석배정"><input id="mLink" placeholder="https://..." style="margin-top:8px">`,()=>{let arr=get("v2CustomPorts",[]);arr.push({port:"incheon",name:mName.value,url:mLink.value});set("v2CustomPorts",arr);renderCustomPorts()})}renderCustomPorts();
+
+// 가계부
+const budgetInputs=["budgetApr","budgetMay","budgetJun","budgetTarget"];
+budgetInputs.forEach(id=>{const el=$("#"+id);const saved=localStorage.getItem("v2_"+id);if(saved!==null)el.value=saved;el.oninput=()=>{localStorage.setItem("v2_"+id,el.value);updateBudget()}});
+let budgetChecks=get("v2BudgetChecks",{});
+$$('.budget-check').forEach(el=>{el.checked=!!budgetChecks[el.dataset.key];el.onchange=()=>{budgetChecks[el.dataset.key]=el.checked;set("v2BudgetChecks",budgetChecks)}});
+function updateBudget(){const vals=[+budgetApr.value||0,+budgetMay.value||0,+budgetJun.value||0];const avg=Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);const max=Math.max(...vals);const target=+budgetTarget.value||0;budgetAvg.textContent=avg;budgetMax.textContent=max;const gap=avg-target;budgetGap.textContent=(gap>0?"+":"")+gap+"만원";} updateBudget();
 </script>
 </body>
 </html>
