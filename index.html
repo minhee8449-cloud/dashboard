@@ -369,7 +369,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
 
             <div class="tip">
               <b>자동 연결</b>
-              <small>토스 197만원은 주택대출 177만원 + 유치원 7만원 + 유나네계비 10만원 + 어린이집 3만원과 연결되어 있어, 토스 송금 완료를 체크하면 해당 개별 항목도 자동 체크됩니다.</small>
+              <small>각 은행은 해당 세부항목과 연결되어 있습니다. 은행의 ‘송금 완료’를 체크하면 연결된 개별 항목이 자동 체크되고, 연결 항목 중 하나를 해제하면 해당 은행 체크도 자동으로 풀립니다.</small>
             </div>
           </div>
 
@@ -416,6 +416,19 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
               <div><strong id="debitUsageRate">0%</strong><small>생활비 사용률</small></div>
             </div>
             <label class="mini-row" style="margin-top:12px"><input id="debitTransferDone" class="checkbox" type="checkbox"><span>월급날 체크카드 생활비 계좌 이체 완료</span></label>
+
+            <div class="tip" style="margin-top:12px">
+              <b>체크카드 생활비 자동이체</b>
+              <small>아래 체크박스는 아이·교육 섹션의 해당 항목과 자동으로 연결됩니다.</small>
+            </div>
+            <label class="mini-row">
+              <input id="debitEyelevelDone" class="checkbox debit-linked-check" data-link="eyelevel" type="checkbox">
+              <span>눈높이 자동이체 완료 · 88,000원</span>
+            </label>
+            <label class="mini-row">
+              <input id="debitSwimmingDone" class="checkbox debit-linked-check" data-link="swimming" type="checkbox">
+              <span>수영 생활비 이체 완료 · 160,000원</span>
+            </label>
           </div>
 
           <div class="card col-7">
@@ -573,40 +586,40 @@ function renderWebinarChecks(){const root=$("#webinarChecklist");if(!root)return
 
 const transferDefaults=[
  {group:"보험·연금",items:[
-  ["insurance","보험",180000,"living","",null],
+  ["insurance","보험",180000,"living","","my_nonghyup"],
   ["child_ins1","아이 보험 1",60000,"living","",null],
   ["child_ins2","아이 보험 2",60000,"living","",null],
   ["mirae_pension","연금 (미래)",100000,"saving","저축/자산","my_mirae"],
   ["dental_woori","치치 치아보험 (우리)",20000,"living","","husband_woori"],
-  ["pension_sc","치치 연금 (SC)",100000,"saving","저축/자산","husband_sc"]
+  ["pension_sc","치치 연금 (SC)",100000,"saving","저축/자산","husband_sc"],
+  ["car_ins_nh","자동차보험 (농협)",40000,"living","","husband_nonghyup"],
+  ["chichi_ins_nh","치치 보험 (농협)",140000,"living","","husband_nonghyup"]
  ]},
  {group:"계비·모임",items:[
-  ["parents","친정",100000,"living","",null],
-  ["country","시골",100000,"living","",null],
-  ["sukgyeong","숙경부장님",50000,"living","",null],
+  ["parents","친정",100000,"living","","my_woori_dues"],
+  ["country","시골",100000,"living","","husband_kakao"],
+  ["sukgyeong","숙경부장님",50000,"living","","my_kakao"],
   ["yuna","유나네",100000,"living","","my_toss"],
-  ["alumni","치치동창",20000,"living","",null]
+  ["alumni","치치동창",20000,"living","","husband_kakao"]
  ]},
  {group:"주거·대출",items:[
   ["housing_loan","주택대출",1770000,"living","","my_toss"],
-  ["credit_loan","신용대출",140000,"living","",null]
+  ["credit_loan","신용대출",140000,"living","","husband_kbank"]
  ]},
  {group:"남편 관련",items:[
-  ["transport","교통비",100000,"living","",null],
-  ["allowance","용돈",300000,"living","",null],
-  ["car_ins_nh","자동차보험 (농협)",40000,"living","","husband_nonghyup"],
-  ["chichi_ins_nh","치치 보험 (농협)",140000,"living","","husband_nonghyup"]
+  ["transport","교통비",100000,"living","","husband_shinhan"],
+  ["allowance","용돈",300000,"living","",null]
  ]},
  {group:"저축·투자",items:[
   ["hantoo","한투",100000,"saving","저축/자산","my_hantoo"],
   ["toss_stock","토스증권",30000,"saving","저축/자산",null],
-  ["upbit","업비트",100000,"saving","저축/자산",null],
-  ["subscription","청약",20000,"saving","월 2만원",null],
+  ["upbit","업비트",100000,"saving","저축/자산","my_kbank"],
+  ["subscription","청약",20000,"saving","월 2만원","my_kb"],
   ["royoon_sub","로윤청약",20000,"saving","월 2만원",null],
   ["jiwoo_sub","지우청약",20000,"saving","월 2만원",null]
  ]},
  {group:"아이·교육",items:[
-  ["pickup","등하원비",1000000,"living","",null],
+  ["pickup","등하원비",1000000,"living","","my_mom_mg"],
   ["kindergarten","유치원",70000,"living","자동이체","my_toss"],
   ["taekwondo","태권도",190000,"living","직접이체",null],
   ["swimming","수영",160000,"living","직접이체",null],
@@ -654,22 +667,22 @@ function getTransferRows(){
 const accountBankDefs={
  my:[
   {id:"my_toss",name:"토스",amount:1970000,links:["housing_loan","kindergarten","yuna","daycare"]},
-  {id:"my_nonghyup",name:"농협",amount:180000,links:[]},
-  {id:"my_kb",name:"국민",amount:20000,links:[]},
-  {id:"my_kakao",name:"카카오뱅크",amount:50000,links:[]},
-  {id:"my_woori_dues",name:"우리은행(계비)",amount:100000,links:[]},
-  {id:"my_mom_mg",name:"엄마 새마을금고",amount:1000000,links:[]},
+  {id:"my_nonghyup",name:"농협",amount:180000,links:["insurance"]},
+  {id:"my_kb",name:"국민",amount:20000,links:["subscription"]},
+  {id:"my_kakao",name:"카카오뱅크",amount:50000,links:["sukgyeong"]},
+  {id:"my_woori_dues",name:"우리은행(계비)",amount:100000,links:["parents"]},
+  {id:"my_mom_mg",name:"엄마 새마을금고",amount:1000000,links:["pickup"]},
   {id:"my_hantoo",name:"한투",amount:100000,links:["hantoo"]},
-  {id:"my_kbank",name:"케이뱅크",amount:100000,links:[]},
+  {id:"my_kbank",name:"케이뱅크",amount:100000,links:["upbit"]},
   {id:"my_mirae",name:"미래에셋",amount:100000,links:["mirae_pension"]}
  ],
  husband:[
   {id:"husband_woori",name:"우리",amount:20000,links:["dental_woori"]},
   {id:"husband_nonghyup",name:"농협",amount:180000,links:["car_ins_nh","chichi_ins_nh"]},
-  {id:"husband_kakao",name:"카카오",amount:120000,links:[]},
-  {id:"husband_kbank",name:"케이뱅크",amount:140000,links:[]},
+  {id:"husband_kakao",name:"카카오",amount:120000,links:["country","alumni"]},
+  {id:"husband_kbank",name:"케이뱅크",amount:140000,links:["credit_loan"]},
   {id:"husband_sc",name:"SC",amount:100000,links:["pension_sc"]},
-  {id:"husband_shinhan",name:"신한",amount:100000,links:[]}
+  {id:"husband_shinhan",name:"신한",amount:100000,links:["transport"]}
  ]
 };
 let accountBankState=get("v4AccountBankState",{});
@@ -757,7 +770,33 @@ function renderTransfers(){
 
  updateAllBudget();
  renderBankTransfers();
+ syncDebitLinkedChecks();
 }
+
+
+function syncDebitLinkedChecks(){
+  $$(".debit-linked-check").forEach(el=>{
+    const id=el.dataset.link;
+    el.checked=!!(transferState[id]||{}).done;
+  });
+}
+
+$$(".debit-linked-check").forEach(el=>el.onchange=()=>{
+  const id=el.dataset.link;
+  transferState[id]=transferState[id]||{};
+  transferState[id].done=el.checked;
+  set("v3TransferState",transferState);
+
+  // 은행별 자동연결 상태도 동기화
+  [...accountBankDefs.my,...accountBankDefs.husband].forEach(bank=>{
+    if(bank.links.includes(id)){
+      accountBankState[bank.id]=bank.links.every(linkId=>!!(transferState[linkId]||{}).done);
+    }
+  });
+  set("v4AccountBankState",accountBankState);
+
+  renderTransfers();
+});
 
 function updateTransferSummary(){
  const rows=getTransferRows();
@@ -770,6 +809,7 @@ function updateTransferSummary(){
 }
 
 renderTransfers();
+syncDebitLinkedChecks();
 
 $$(".card-due").forEach(el=>{
  const k="v3CardDue_"+el.dataset.card;
