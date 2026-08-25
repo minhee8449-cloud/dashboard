@@ -313,10 +313,29 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
       </section>
 
       <section id="budget" class="page">
-        <div class="hero"><h3>💳 우리집 가계부 · 25일 시작</h3><p>매일 쓰지 않고 월급날 중심으로 이번 달 보낼 돈·카드 고정비·변동비만 관리해요.</p></div>
+        <div class="hero"><h3>💳 우리집 가계부 · 25일 시작</h3><p>수입 → 생활지출 → 저축·투자 → 남는 돈 순서로 한눈에 보고, 매일 쓰지 않고 월급날 중심으로 관리해요.</p></div>
         <div class="grid">
           <div class="card col-12">
-            <div class="section-title"><div><h3>💸 이번 달 이체 체크</h3><div class="desc">자동이체 포함. 체크하면 이체 완료로 계산되고 금액은 직접 수정할 수 있어요.</div></div><span class="badge">25일 필수 확인</span></div>
+            <div class="section-title"><div><h3>💰 이번 달 수입</h3><div class="desc">월급과 기타 수입을 입력하면 총수입이 자동 계산됩니다.</div></div><span class="badge">25일 입력</span></div>
+            <div class="budget-grid">
+              <div class="budget-box"><label>내 월급</label><input id="incomeMine" class="income-input" type="number" min="0" value="0"><div class="small">원</div></div>
+              <div class="budget-box"><label>남편 월급</label><input id="incomeHusband" class="income-input" type="number" min="0" value="0"><div class="small">원</div></div>
+              <div class="budget-box"><label>기타 수입</label><input id="incomeOther" class="income-input" type="number" min="0" value="0"><div class="small">원</div></div>
+            </div>
+            <div class="metric" style="margin-top:14px">
+              <div><strong id="incomeTotal">0원</strong><small>총수입</small></div>
+              <div><strong id="livingExpenseTotal">0원</strong><small>생활지출</small></div>
+              <div><strong id="savingsTotal">0원</strong><small>저축·투자</small></div>
+            </div>
+            <div class="metric" style="margin-top:10px">
+              <div><strong id="remainingCash">0원</strong><small>총수입 - 생활지출 - 저축·투자</small></div>
+              <div><strong id="livingRate">0%</strong><small>수입 대비 생활지출 비율</small></div>
+              <div><strong id="savingRate">0%</strong><small>수입 대비 저축·투자 비율</small></div>
+            </div>
+          </div>
+
+          <div class="card col-12">
+            <div class="section-title"><div><h3>💸 이번 달 이체 체크</h3><div class="desc">자동이체 포함. 체크하면 이체 완료로 계산됩니다. 저축·투자는 아래 합계에서 생활비와 자동 분리됩니다.</div></div><span class="badge">25일 필수 확인</span></div>
             <div class="transfer-summary">
               <div class="sum-box"><small>이체 예정 총액</small><strong id="transferTotal">0원</strong></div>
               <div class="sum-box"><small>이체 완료</small><strong id="transferDone">0원</strong></div>
@@ -325,8 +344,9 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
             </div>
             <div id="transferGroups" class="transfer-groups"></div>
           </div>
+
           <div class="card col-12">
-            <div class="section-title"><div><h3>💳 카드별 고정결제</h3><div class="desc">고정비와 카드 결제예정액을 분리해서 확인합니다.</div></div><span class="badge">월 1회</span></div>
+            <div class="section-title"><div><h3>💳 카드별 고정결제</h3><div class="desc">카드 고정비와 결제예정액을 따로 봅니다. 카드 결제예정액은 월 전체 현금흐름 확인용이고 생활비에 중복 합산하지 않습니다.</div></div><span class="badge">월 1회</span></div>
             <table class="card-table">
               <thead><tr><th>카드</th><th>고정결제 내역</th><th>고정 합계</th><th>결제예정액</th></tr></thead>
               <tbody>
@@ -344,19 +364,31 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
               <div><strong>279,000원</strong><small>농협 가족계좌 → 삼성카드</small></div>
             </div>
           </div>
+
           <div class="card col-7">
-            <h3>🛒 이번 달 변동 생활비</h3><div class="desc">매일 적지 않고 주 1회 또는 월 1회 합산</div>
+            <div class="section-title"><div><h3>🛒 이번 달 변동 생활비</h3><div class="desc">매일 적지 않고 주 1회 또는 월 1회 합산. 경조사비는 제외.</div></div><span class="badge">간단 관리</span></div>
             <div class="budget-grid">
-              <div class="budget-box"><label>식비·배달</label><input class="variable-spend" data-key="food" type="number" value="0"></div>
-              <div class="budget-box"><label>쇼핑·생활용품</label><input class="variable-spend" data-key="shopping" type="number" value="0"></div>
-              <div class="budget-box"><label>주유·코스트코</label><input class="variable-spend" data-key="costco" type="number" value="0"></div>
-              <div class="budget-box"><label>추가 교육비</label><input class="variable-spend" data-key="edu" type="number" value="0"></div>
-              <div class="budget-box"><label>여행·행사성</label><input class="variable-spend" data-key="event" type="number" value="0"></div>
-              <div class="budget-box"><label>기타</label><input class="variable-spend" data-key="other" type="number" value="0"></div>
+              <div class="budget-box"><label>식비·배달</label><input class="variable-spend" data-key="food" type="number" min="0" value="0"><div class="small">원</div></div>
+              <div class="budget-box"><label>쇼핑·생활용품</label><input class="variable-spend" data-key="shopping" type="number" min="0" value="0"><div class="small">원</div></div>
+              <div class="budget-box"><label>주유·코스트코</label><input class="variable-spend" data-key="costco" type="number" min="0" value="0"><div class="small">원</div></div>
+              <div class="budget-box"><label>추가 교육비</label><input class="variable-spend" data-key="edu" type="number" min="0" value="0"><div class="small">원</div></div>
+              <div class="budget-box"><label>여행·행사성</label><input class="variable-spend" data-key="event" type="number" min="0" value="0"><div class="small">원</div></div>
+              <div class="budget-box"><label>기타</label><input class="variable-spend" data-key="other" type="number" min="0" value="0"><div class="small">원</div></div>
             </div>
-            <div class="metric" style="margin-top:14px"><div><strong id="variableTotal">0원</strong><small>변동비 합계</small></div><div><strong id="monthlyKnownTotal">0원</strong><small>이체예정 + 변동비</small></div><div><strong>25일</strong><small>가계부 기준일</small></div></div>
+            <div class="metric" style="margin-top:14px">
+              <div><strong id="variableTotal">0원</strong><small>변동 생활비 합계</small></div>
+              <div><strong id="livingTransferTotal">0원</strong><small>생활성 이체 합계</small></div>
+              <div><strong id="monthlyKnownTotal">0원</strong><small>생활성 이체 + 변동비</small></div>
+            </div>
           </div>
-          <div class="card col-5"><h3>📝 이번 달 메모</h3><div class="tip"><b>원칙</b><small>매일 기록하지 않기 · 주 1회/월 1회 · 25일은 꼭 확인</small></div><div class="tip"><b>저축/투자</b><small>한투·토스·업비트·연금·청약은 생활소비와 분리</small></div><textarea id="budgetMemo" class="note"></textarea></div>
+
+          <div class="card col-5">
+            <h3>📝 이번 달 메모</h3>
+            <div class="tip"><b>관리 원칙</b><small>매일 기록하지 않기 · 주 1회 또는 월 1회 확인 · 25일은 꼭 체크.</small></div>
+            <div class="tip"><b>저축/투자</b><small>한투·토스증권·업비트·연금·청약은 생활소비와 분리해서 봅니다.</small></div>
+            <div class="tip"><b>카드</b><small>남편 카드처럼 자주 확인하기 어려운 카드는 월 1회 ‘결제예정액’만 입력.</small></div>
+            <textarea id="budgetMemo" class="note" placeholder="이번 달 특이사항 / 여행 / 큰 지출 / 다음 달 조정할 것"></textarea>
+          </div>
         </div>
       </section>
 
@@ -487,22 +519,132 @@ let webinarChecks=get("v3WebinarChecks",{});
 function renderWebinarChecks(){const root=$("#webinarChecklist");if(!root)return;root.innerHTML=webinarDefaults.map((t,i)=>`<div class="row ${webinarChecks[i]?"done":""}"><input class="checkbox" type="checkbox" ${webinarChecks[i]?"checked":""} onchange="webinarChecks[${i}]=this.checked;set('v3WebinarChecks',webinarChecks);renderWebinarChecks()"><span class="txt">${t}</span></div>`).join("")}renderWebinarChecks();
 
 const transferDefaults=[
- {group:"보험·연금",items:[["보험",180000,""],["아이 보험 1",60000,""],["아이 보험 2",60000,""],["연금 (미래)",100000,"저축/자산"],["치치 치아보험 (우리)",20000,""],["치치 연금 (SC)",100000,"저축/자산"]]},
- {group:"계비·모임",items:[["친정",100000,""],["시골",100000,""],["숙경부장님",50000,""],["유나네",100000,""],["치치동창",20000,""]]},
- {group:"주거·대출",items:[["주택대출",1770000,""],["신용대출",140000,""]]},
- {group:"남편 관련",items:[["교통비",100000,""],["용돈",300000,""],["자동차보험 (농협)",40000,""],["치치 보험 (농협)",140000,""]]},
- {group:"저축·투자",items:[["한투",100000,"저축/자산"],["토스증권",30000,"저축/자산"],["업비트",100000,"저축/자산"],["청약2",0,"금액 입력"],["로윤청약2",0,"금액 입력"],["지우청약2",0,"금액 입력"]]},
- {group:"아이·교육",items:[["등하원비",1000000,""],["유치원",70000,"자동이체"],["태권도",190000,"직접이체"],["수영",160000,"직접이체"],["눈높이",88000,"자동이체"],["어린이집",30000,"자동이체"]]},
- {group:"카드 이체 메모",items:[["농협 가족계좌 → 삼성카드",279000,"별도 이체 체크"]]}
+ {group:"보험·연금",items:[
+  ["보험",180000,"living",""],["아이 보험 1",60000,"living",""],["아이 보험 2",60000,"living",""],
+  ["연금 (미래)",100000,"saving","저축/자산"],["치치 치아보험 (우리)",20000,"living",""],["치치 연금 (SC)",100000,"saving","저축/자산"]
+ ]},
+ {group:"계비·모임",items:[
+  ["친정",100000,"living",""],["시골",100000,"living",""],["숙경부장님",50000,"living",""],["유나네",100000,"living",""],["치치동창",20000,"living",""]
+ ]},
+ {group:"주거·대출",items:[
+  ["주택대출",1770000,"living",""],["신용대출",140000,"living",""]
+ ]},
+ {group:"남편 관련",items:[
+  ["교통비",100000,"living",""],["용돈",300000,"living",""],["자동차보험 (농협)",40000,"living",""],["치치 보험 (농협)",140000,"living",""]
+ ]},
+ {group:"저축·투자",items:[
+  ["한투",100000,"saving","저축/자산"],["토스증권",30000,"saving","저축/자산"],["업비트",100000,"saving","저축/자산"],
+  ["청약2",0,"saving","금액 입력"],["로윤청약2",0,"saving","금액 입력"],["지우청약2",0,"saving","금액 입력"]
+ ]},
+ {group:"아이·교육",items:[
+  ["등하원비",1000000,"living",""],["유치원",70000,"living","자동이체"],["태권도",190000,"living","직접이체"],
+  ["수영",160000,"living","직접이체"],["눈높이",88000,"living","자동이체"],["어린이집",30000,"living","자동이체"]
+ ]},
+ {group:"카드 이체 메모",items:[
+  ["농협 가족계좌 → 삼성카드",279000,"living","별도 이체 체크"]
+ ]}
 ];
 let transferState=get("v3TransferState",{});
+
 function fmtWon(v){return Math.round(+v||0).toLocaleString("ko-KR")+"원"}
-function getTransferRows(){let rows=[];transferDefaults.forEach((g,gi)=>g.items.forEach((it,ii)=>{const k=gi+"_"+ii;const st=transferState[k]||{};rows.push({amount:st.amount!==undefined?+st.amount:+it[1],done:!!st.done})}));return rows}
-function renderTransfers(){const root=$("#transferGroups");if(!root)return;root.innerHTML=transferDefaults.map((g,gi)=>`<div class="transfer-group"><h4>${g.group}</h4>${g.items.map((it,ii)=>{const key=gi+"_"+ii;const st=transferState[key]||{};const amount=st.amount!==undefined?st.amount:it[1];const done=!!st.done;return `<div class="transfer-item ${done?"done":""}"><input class="checkbox transfer-check" data-key="${key}" type="checkbox" ${done?"checked":""}><div class="transfer-name"><b>${it[0]}</b>${it[2]?`<small>${it[2]}</small>`:""}</div><input class="transfer-amount" data-key="${key}" type="number" min="0" value="${amount}"></div>`}).join("")}</div>`).join("");$$(".transfer-check").forEach(el=>el.onchange=()=>{const k=el.dataset.key;transferState[k]=transferState[k]||{};transferState[k].done=el.checked;set("v3TransferState",transferState);renderTransfers()});$$(".transfer-amount").forEach(el=>el.oninput=()=>{const k=el.dataset.key;transferState[k]=transferState[k]||{};transferState[k].amount=+el.value||0;set("v3TransferState",transferState);updateTransferSummary()});updateTransferSummary()}
-function updateTransferSummary(){const rows=getTransferRows();const total=rows.reduce((s,x)=>s+x.amount,0);const done=rows.filter(x=>x.done).reduce((s,x)=>s+x.amount,0);if($("#transferTotal"))transferTotal.textContent=fmtWon(total);if($("#transferDone"))transferDone.textContent=fmtWon(done);if($("#transferRemain"))transferRemain.textContent=fmtWon(total-done);if($("#transferPct"))transferPct.textContent=total?Math.round(done/total*100)+"%":"0%";updateMonthlyKnown()}
+
+function getTransferRows(){
+ let rows=[];
+ transferDefaults.forEach((g,gi)=>g.items.forEach((it,ii)=>{
+   const k=gi+"_"+ii; const st=transferState[k]||{};
+   rows.push({
+     amount:st.amount!==undefined?+st.amount:+it[1],
+     done:!!st.done,
+     type:it[2],
+     name:it[0]
+   });
+ }));
+ return rows;
+}
+
+function renderTransfers(){
+ const root=$("#transferGroups"); if(!root)return;
+ root.innerHTML=transferDefaults.map((g,gi)=>`<div class="transfer-group"><h4>${g.group}</h4>${g.items.map((it,ii)=>{
+   const key=gi+"_"+ii; const st=transferState[key]||{};
+   const amount=st.amount!==undefined?st.amount:it[1]; const done=!!st.done;
+   const typeBadge=it[2]==="saving"?" · 저축/투자":"";
+   return `<div class="transfer-item ${done?"done":""}">
+     <input class="checkbox transfer-check" data-key="${key}" type="checkbox" ${done?"checked":""}>
+     <div class="transfer-name"><b>${it[0]}</b><small>${(it[3]||"")}${typeBadge}</small></div>
+     <input class="transfer-amount" data-key="${key}" type="number" min="0" value="${amount}">
+   </div>`;
+ }).join("")}</div>`).join("");
+
+ $$(".transfer-check").forEach(el=>el.onchange=()=>{
+   const k=el.dataset.key; transferState[k]=transferState[k]||{};
+   transferState[k].done=el.checked; set("v3TransferState",transferState);
+   renderTransfers();
+ });
+
+ $$(".transfer-amount").forEach(el=>el.oninput=()=>{
+   const k=el.dataset.key; transferState[k]=transferState[k]||{};
+   transferState[k].amount=+el.value||0; set("v3TransferState",transferState);
+   updateAllBudget();
+ });
+ updateAllBudget();
+}
+
+function updateTransferSummary(){
+ const rows=getTransferRows();
+ const total=rows.reduce((s,x)=>s+x.amount,0);
+ const done=rows.filter(x=>x.done).reduce((s,x)=>s+x.amount,0);
+ if($("#transferTotal")) transferTotal.textContent=fmtWon(total);
+ if($("#transferDone")) transferDone.textContent=fmtWon(done);
+ if($("#transferRemain")) transferRemain.textContent=fmtWon(total-done);
+ if($("#transferPct")) transferPct.textContent=total?Math.round(done/total*100)+"%":"0%";
+}
+
+$$(".card-due").forEach(el=>{
+ const k="v3CardDue_"+el.dataset.card;
+ const s=localStorage.getItem(k); if(s!==null) el.value=s;
+ el.oninput=()=>{localStorage.setItem(k,el.value);updateCardDue()}
+});
+function updateCardDue(){
+ const total=$$(".card-due").reduce((s,e)=>s+(+e.value||0),0);
+ if($("#cardDueTotal")) cardDueTotal.textContent=fmtWon(total)
+}
+
+$$(".variable-spend").forEach(el=>{
+ const k="v3Variable_"+el.dataset.key;
+ const s=localStorage.getItem(k); if(s!==null) el.value=s;
+ el.oninput=()=>{localStorage.setItem(k,el.value);updateAllBudget()}
+});
+
+$$(".income-input").forEach(el=>{
+ const k="v4Income_"+el.id;
+ const s=localStorage.getItem(k); if(s!==null) el.value=s;
+ el.oninput=()=>{localStorage.setItem(k,el.value);updateAllBudget()}
+});
+
+function updateAllBudget(){
+ updateTransferSummary();
+
+ const rows=getTransferRows();
+ const livingTransfers=rows.filter(x=>x.type==="living").reduce((s,x)=>s+x.amount,0);
+ const savings=rows.filter(x=>x.type==="saving").reduce((s,x)=>s+x.amount,0);
+ const variable=$$(".variable-spend").reduce((s,e)=>s+(+e.value||0),0);
+ const income=$$(".income-input").reduce((s,e)=>s+(+e.value||0),0);
+ const living= livingTransfers + variable;
+ const remain=income-living-savings;
+
+ if($("#variableTotal")) variableTotal.textContent=fmtWon(variable);
+ if($("#livingTransferTotal")) livingTransferTotal.textContent=fmtWon(livingTransfers);
+ if($("#monthlyKnownTotal")) monthlyKnownTotal.textContent=fmtWon(living);
+ if($("#incomeTotal")) incomeTotal.textContent=fmtWon(income);
+ if($("#livingExpenseTotal")) livingExpenseTotal.textContent=fmtWon(living);
+ if($("#savingsTotal")) savingsTotal.textContent=fmtWon(savings);
+ if($("#remainingCash")) remainingCash.textContent=fmtWon(remain);
+ if($("#livingRate")) livingRate.textContent=income?Math.round(living/income*100)+"%":"0%";
+ if($("#savingRate")) savingRate.textContent=income?Math.round(savings/income*100)+"%":"0%";
+}
 renderTransfers();
-$$(".card-due").forEach(el=>{const k="v3CardDue_"+el.dataset.card;const s=localStorage.getItem(k);if(s!==null)el.value=s;el.oninput=()=>{localStorage.setItem(k,el.value);updateCardDue()}});function updateCardDue(){const total=$$(".card-due").reduce((s,e)=>s+(+e.value||0),0);if($("#cardDueTotal"))cardDueTotal.textContent=fmtWon(total)}updateCardDue();
-$$(".variable-spend").forEach(el=>{const k="v3Variable_"+el.dataset.key;const s=localStorage.getItem(k);if(s!==null)el.value=s;el.oninput=()=>{localStorage.setItem(k,el.value);updateVariable()}});function updateVariable(){const total=$$(".variable-spend").reduce((s,e)=>s+(+e.value||0),0);if($("#variableTotal"))variableTotal.textContent=fmtWon(total);updateMonthlyKnown()}function updateMonthlyKnown(){if(!$("#monthlyKnownTotal"))return;const transfer=getTransferRows().reduce((s,x)=>s+x.amount,0);const variable=$$(".variable-spend").reduce((s,e)=>s+(+e.value||0),0);monthlyKnownTotal.textContent=fmtWon(transfer+variable)}updateVariable();
+updateCardDue();
+updateAllBudget();
 
 </script>
 </body>
