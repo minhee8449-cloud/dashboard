@@ -690,7 +690,10 @@ let accountBankState=get("v4AccountBankState",{});
 function renderOneAccountBanks(rootId,defs){
  const root=$("#"+rootId); if(!root)return;
  root.innerHTML=defs.map(bank=>{
-   const done=!!accountBankState[bank.id];
+   const done=bank.links && bank.links.length
+     ? bank.links.every(linkId=>!!(transferState[linkId]||{}).done)
+     : !!accountBankState[bank.id];
+   accountBankState[bank.id]=done;
    return `<div class="bank-transfer-box">
      <h4>${bank.name}</h4>
      <div class="bank-total">${fmtWon(bank.amount)}</div>
