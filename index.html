@@ -369,7 +369,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
 
             <div class="tip">
               <b>자동 연결</b>
-              <small>각 은행은 해당 세부항목과 연결되어 있습니다. 은행의 ‘송금 완료’를 체크하면 연결된 개별 항목이 자동 체크되고, 연결 항목 중 하나를 해제하면 해당 은행 체크도 자동으로 풀립니다.</small>
+              <small>각 은행은 해당 세부항목과 연결되어 있습니다. 삼성(국민)·현대(SC)는 카드별 고정결제의 결제예정액을 입력하면 같은 금액이 자동 표시됩니다. 은행의 ‘송금 완료’를 체크하면 연결된 개별 항목이 자동 체크되고, 연결 항목 중 하나를 해제하면 해당 은행 체크도 자동으로 풀립니다.</small>
             </div>
           </div>
 
@@ -666,6 +666,7 @@ function getTransferRows(){
 
 const accountBankDefs={
  my:[
+  {id:"my_samsung_kb",name:"삼성(국민)",amountSource:"card:samsung",links:[]},
   {id:"my_toss",name:"토스",amount:1970000,links:["housing_loan","kindergarten","yuna","daycare"]},
   {id:"my_nonghyup",name:"농협",amount:180000,links:["insurance"]},
   {id:"my_woori",name:"우리",amount:160000,links:["child_ins1","child_ins2","royoon_sub","jiwoo_sub"]},
@@ -678,6 +679,7 @@ const accountBankDefs={
   {id:"my_mirae",name:"미래에셋",amount:100000,links:["mirae_pension"]}
  ],
  husband:[
+  {id:"husband_hyundai_sc",name:"현대(SC)",amountSource:"card:hyundai",links:[]},
   {id:"husband_woori",name:"우리",amount:20000,links:["dental_woori"]},
   {id:"husband_nonghyup",name:"농협",amount:180000,links:["car_ins_nh","chichi_ins_nh"]},
   {id:"husband_kakao",name:"카카오",amount:120000,links:["country","alumni"]},
@@ -688,6 +690,15 @@ const accountBankDefs={
 };
 let accountBankState=get("v4AccountBankState",{});
 
+function getBankAmount(bank){
+  if(bank.amountSource && bank.amountSource.startsWith("card:")){
+    const card=bank.amountSource.split(":")[1];
+    const input=document.querySelector(`.card-due[data-card="${card}"]`);
+    return +(input?.value||0);
+  }
+  return +(bank.amount||0);
+}
+
 function renderOneAccountBanks(rootId,defs){
  const root=$("#"+rootId); if(!root)return;
  root.innerHTML=defs.map(bank=>{
@@ -697,7 +708,7 @@ function renderOneAccountBanks(rootId,defs){
    accountBankState[bank.id]=done;
    return `<div class="bank-transfer-box">
      <h4>${bank.name}</h4>
-     <div class="bank-total">${fmtWon(bank.amount)}</div>
+     <div class="bank-total">${fmtWon(getBankAmount(bank))}</div>
      <label class="bank-master">
        <input class="checkbox account-bank-check" data-bank-id="${bank.id}" type="checkbox" ${done?"checked":""}>
        <span>${bank.name} 송금 완료</span>
@@ -710,8 +721,8 @@ function renderBankTransfers(){
  renderOneAccountBanks("myBankTransferGrid",accountBankDefs.my);
  renderOneAccountBanks("husbandBankTransferGrid",accountBankDefs.husband);
 
- const myTotal=accountBankDefs.my.reduce((s,x)=>s+x.amount,0);
- const husbandTotal=accountBankDefs.husband.reduce((s,x)=>s+x.amount,0);
+ const myTotal=accountBankDefs.my.reduce((s,x)=>s+getBankAmount(x),0);
+ const husbandTotal=accountBankDefs.husband.reduce((s,x)=>s+getBankAmount(x),0);
  if($("#myBankTotal"))myBankTotal.textContent=fmtWon(myTotal);
  if($("#husbandBankTotal"))husbandBankTotal.textContent=fmtWon(husbandTotal);
  if($("#allBankTotal"))allBankTotal.textContent=fmtWon(myTotal+husbandTotal);
@@ -818,7 +829,7 @@ syncDebitLinkedChecks();
 $$(".card-due").forEach(el=>{
  const k="v3CardDue_"+el.dataset.card;
  const s=localStorage.getItem(k); if(s!==null) el.value=s;
- el.oninput=()=>{localStorage.setItem(k,el.value);updateCardDue()}
+ el.oninput=()=>{localStorage.setItem(k,el.value);updateCardDue();renderBankTransfers()}
 });
 function updateCardDue(){
  const total=$$(".card-due").reduce((s,e)=>s+(+e.value||0),0);
