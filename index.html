@@ -352,17 +352,31 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
               <tbody>
                 <tr><td><b>삼성</b></td><td>관리비 250,000 · 컬리페이 2,000 · 네이버 5,000 · 인터넷 30,000 · 정수기 17,000 · 영어학원 할부 180,000(이번 달 마지막)</td><td>484,000원</td><td><input class="card-due" data-card="samsung" type="number" min="0"></td></tr>
                 <tr><td><b>현대</b></td><td>도시가스 30,000 · 윌라 10,000 · 남편 핸드폰 40,000</td><td>80,000원</td><td><input class="card-due" data-card="hyundai" type="number" min="0"></td></tr>
-                <tr><td><b>하나</b></td><td>남편 핸드폰 80,000</td><td>80,000원</td><td><input class="card-due" data-card="hana" type="number" min="0"></td></tr>
                 <tr><td><b>신한</b></td><td>고정결제 추가 확인</td><td>-</td><td><input class="card-due" data-card="shinhan" type="number" min="0"></td></tr>
                 <tr><td><b>KB국민</b></td><td>고정결제 없음 · 할인용</td><td>-</td><td><input class="card-due" data-card="kb" type="number" min="0"></td></tr>
                 <tr><td><b>롯데</b></td><td>고정결제 없음 · 할인용</td><td>-</td><td><input class="card-due" data-card="lotte" type="number" min="0"></td></tr>
               </tbody>
             </table>
             <div class="metric" style="margin-top:14px">
-              <div><strong>644,000원</strong><small>등록 카드 고정비</small></div>
+              <div><strong>564,000원</strong><small>등록 카드 고정비</small></div>
               <div><strong id="cardDueTotal">0원</strong><small>결제예정액 합계</small></div>
               <div><strong>279,000원</strong><small>농협 가족계좌 → 삼성카드</small></div>
             </div>
+          </div>
+
+          <div class="card col-12">
+            <div class="section-title"><div><h3>💳 체크카드 생활비</h3><div class="desc">월급날 생활비 계좌로 미리 보내두는 예산입니다. 이체 자체는 자금이동으로 보고, 실제 사용액은 따로 확인해 이중계산을 막습니다.</div></div><span class="badge">매달 금액 수정</span></div>
+            <div class="budget-grid">
+              <div class="budget-box"><label>이번 달 생활비 예산</label><input id="debitBudget" type="number" min="0" value="0"><div class="small">원</div></div>
+              <div class="budget-box"><label>체크카드 계좌 이체액</label><input id="debitTransfer" type="number" min="0" value="0"><div class="small">원</div></div>
+              <div class="budget-box"><label>이번 달 실제 사용액</label><input id="debitSpent" type="number" min="0" value="0"><div class="small">원</div></div>
+            </div>
+            <div class="metric" style="margin-top:14px">
+              <div><strong id="debitBalance">0원</strong><small>예산 잔액</small></div>
+              <div><strong id="debitTransferGap">0원</strong><small>예산 대비 이체 차이</small></div>
+              <div><strong id="debitUsageRate">0%</strong><small>생활비 사용률</small></div>
+            </div>
+            <label class="mini-row" style="margin-top:12px"><input id="debitTransferDone" class="checkbox" type="checkbox"><span>월급날 체크카드 생활비 계좌 이체 완료</span></label>
           </div>
 
           <div class="card col-7">
@@ -376,7 +390,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
               <div class="budget-box"><label>기타</label><input class="variable-spend" data-key="other" type="number" min="0" value="0"><div class="small">원</div></div>
             </div>
             <div class="metric" style="margin-top:14px">
-              <div><strong id="variableTotal">0원</strong><small>변동 생활비 합계</small></div>
+              <div><strong id="variableTotal">0원</strong><small>변동비 + 체크카드 실제사용</small></div>
               <div><strong id="livingTransferTotal">0원</strong><small>생활성 이체 합계</small></div>
               <div><strong id="monthlyKnownTotal">0원</strong><small>생활성 이체 + 변동비</small></div>
             </div>
@@ -534,7 +548,7 @@ const transferDefaults=[
  ]},
  {group:"저축·투자",items:[
   ["한투",100000,"saving","저축/자산"],["토스증권",30000,"saving","저축/자산"],["업비트",100000,"saving","저축/자산"],
-  ["청약2",0,"saving","금액 입력"],["로윤청약2",0,"saving","금액 입력"],["지우청약2",0,"saving","금액 입력"]
+  ["청약",20000,"saving","월 2만원"],["로윤청약",20000,"saving","월 2만원"],["지우청약",20000,"saving","월 2만원"]
  ]},
  {group:"아이·교육",items:[
   ["등하원비",1000000,"living",""],["유치원",70000,"living","자동이체"],["태권도",190000,"living","직접이체"],
@@ -621,6 +635,27 @@ $$(".income-input").forEach(el=>{
  el.oninput=()=>{localStorage.setItem(k,el.value);updateAllBudget()}
 });
 
+function updateDebitBudget(){
+ const budget=+($("#debitBudget")?.value||0);
+ const transfer=+($("#debitTransfer")?.value||0);
+ const spent=+($("#debitSpent")?.value||0);
+ if($("#debitBalance")) debitBalance.textContent=fmtWon(budget-spent);
+ if($("#debitTransferGap")) debitTransferGap.textContent=fmtWon(transfer-budget);
+ if($("#debitUsageRate")) debitUsageRate.textContent=budget?Math.round(spent/budget*100)+"%":"0%";
+}
+
+["debitBudget","debitTransfer","debitSpent"].forEach(id=>{
+ const el=$("#"+id); if(!el)return;
+ const key="v5_"+id; const saved=localStorage.getItem(key);
+ if(saved!==null) el.value=saved;
+ el.oninput=()=>{localStorage.setItem(key,el.value);updateDebitBudget();updateAllBudget()}
+});
+const debitDone=$("#debitTransferDone");
+if(debitDone){
+ debitDone.checked=localStorage.getItem("v5_debitTransferDone")==="true";
+ debitDone.onchange=()=>localStorage.setItem("v5_debitTransferDone",debitDone.checked);
+}
+
 function updateAllBudget(){
  updateTransferSummary();
 
@@ -628,11 +663,12 @@ function updateAllBudget(){
  const livingTransfers=rows.filter(x=>x.type==="living").reduce((s,x)=>s+x.amount,0);
  const savings=rows.filter(x=>x.type==="saving").reduce((s,x)=>s+x.amount,0);
  const variable=$$(".variable-spend").reduce((s,e)=>s+(+e.value||0),0);
+ const debitSpent=+($("#debitSpent")?.value||0);
  const income=$$(".income-input").reduce((s,e)=>s+(+e.value||0),0);
- const living= livingTransfers + variable;
+ const living=livingTransfers + variable + debitSpent;
  const remain=income-living-savings;
 
- if($("#variableTotal")) variableTotal.textContent=fmtWon(variable);
+ if($("#variableTotal")) variableTotal.textContent=fmtWon(variable+debitSpent);
  if($("#livingTransferTotal")) livingTransferTotal.textContent=fmtWon(livingTransfers);
  if($("#monthlyKnownTotal")) monthlyKnownTotal.textContent=fmtWon(living);
  if($("#incomeTotal")) incomeTotal.textContent=fmtWon(income);
@@ -641,9 +677,11 @@ function updateAllBudget(){
  if($("#remainingCash")) remainingCash.textContent=fmtWon(remain);
  if($("#livingRate")) livingRate.textContent=income?Math.round(living/income*100)+"%":"0%";
  if($("#savingRate")) savingRate.textContent=income?Math.round(savings/income*100)+"%":"0%";
+ updateDebitBudget();
 }
 renderTransfers();
 updateCardDue();
+updateDebitBudget();
 updateAllBudget();
 
 </script>
