@@ -587,8 +587,8 @@ function renderWebinarChecks(){const root=$("#webinarChecklist");if(!root)return
 const transferDefaults=[
  {group:"보험·연금",items:[
   ["insurance","보험",180000,"living","","my_nonghyup"],
-  ["child_ins1","아이 보험 1",60000,"living","",null],
-  ["child_ins2","아이 보험 2",60000,"living","",null],
+  ["child_ins1","아이 보험 1",60000,"living","","my_woori"],
+  ["child_ins2","아이 보험 2",60000,"living","","my_woori"],
   ["mirae_pension","연금 (미래)",100000,"saving","저축/자산","my_mirae"],
   ["dental_woori","치치 치아보험 (우리)",20000,"living","","husband_woori"],
   ["pension_sc","치치 연금 (SC)",100000,"saving","저축/자산","husband_sc"],
@@ -615,8 +615,8 @@ const transferDefaults=[
   ["toss_stock","토스증권",30000,"saving","저축/자산",null],
   ["upbit","업비트",100000,"saving","저축/자산","my_kbank"],
   ["subscription","청약",20000,"saving","월 2만원","my_kb"],
-  ["royoon_sub","로윤청약",20000,"saving","월 2만원",null],
-  ["jiwoo_sub","지우청약",20000,"saving","월 2만원",null]
+  ["royoon_sub","로윤청약",20000,"saving","월 2만원","my_woori"],
+  ["jiwoo_sub","지우청약",20000,"saving","월 2만원","my_woori"]
  ]},
  {group:"아이·교육",items:[
   ["pickup","등하원비",1000000,"living","","my_mom_mg"],
@@ -668,6 +668,7 @@ const accountBankDefs={
  my:[
   {id:"my_toss",name:"토스",amount:1970000,links:["housing_loan","kindergarten","yuna","daycare"]},
   {id:"my_nonghyup",name:"농협",amount:180000,links:["insurance"]},
+  {id:"my_woori",name:"우리",amount:160000,links:["child_ins1","child_ins2","royoon_sub","jiwoo_sub"]},
   {id:"my_kb",name:"국민",amount:20000,links:["subscription"]},
   {id:"my_kakao",name:"카카오뱅크",amount:50000,links:["sukgyeong"]},
   {id:"my_woori_dues",name:"우리은행(계비)",amount:100000,links:["parents"]},
