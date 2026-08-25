@@ -78,13 +78,41 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
 .check-box h4{margin:0 0 10px}.mini-row{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px dashed #e7ebf0}.mini-row:last-child{border-bottom:0}
 .note{width:100%;min-height:150px;resize:vertical}
 .metric{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metric div{padding:14px;border:1px solid var(--line);border-radius:14px;text-align:center}.metric strong{font-size:22px;color:#2d6dbb;display:block}
-.webinar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.webinar-step{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff}.webinar-step h4{margin:0 0 8px}.webinar-step p{font-size:13px;line-height:1.55;color:#536175;margin:0}.webinar-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.webinar-links a{text-decoration:none}.webinar-checks{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.webinar-check{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fbfdff}.webinar-check label{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.45}.webinar-check input{margin-top:2px}.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.news-item{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff}.news-item h4{margin:7px 0 8px}.news-item p{font-size:13px;line-height:1.6;color:#536175;margin:6px 0}.level{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800}.level.red{background:#ffe9e9;color:#b53939}.level.orange{background:#fff1df;color:#b56a16}.level.green{background:#e8f7ef;color:#26744f}.source{font-size:11px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:10px}.budget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.budget-box{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff}.budget-box label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}.budget-box input{width:100%;font-size:20px;font-weight:800}.budget-total{font-size:32px;font-weight:900;color:#2d6dbb}.budget-note{font-size:12px;color:var(--muted);line-height:1.6}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.news-item{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff}.news-item h4{margin:7px 0 8px}.news-item p{font-size:13px;line-height:1.6;color:#536175;margin:6px 0}.level{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800}.level.red{background:#ffe9e9;color:#b53939}.level.orange{background:#fff1df;color:#b56a16}.level.green{background:#e8f7ef;color:#26744f}.source{font-size:11px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:10px}.budget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.budget-box{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff}.budget-box label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}.budget-box input{width:100%;font-size:20px;font-weight:800}.budget-total{font-size:32px;font-weight:900;color:#2d6dbb}.budget-note{font-size:12px;color:var(--muted);line-height:1.6}
 .modal-bg{position:fixed;inset:0;background:rgba(8,25,45,.42);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
 .modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:20px;box-shadow:0 25px 70px rgba(0,0,0,.25)}
 .modal h3{margin-top:0}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
 .small{font-size:12px;color:var(--muted)}
 @media(max-width:1100px){.app{grid-template-columns:88px 1fr}.brand h1,.brand small,.nav span,.sidebar-foot{display:none}.brand{justify-content:center}.nav button{text-align:center;font-size:0}.nav button::first-letter{font-size:20px}.port-groups{grid-template-columns:1fr 1fr}.template-grid{grid-template-columns:1fr}.col-8,.col-7,.col-6,.col-5,.col-4,.col-3{grid-column:span 12}}
-@media(max-width:720px){.app{display:block}.sidebar{position:static;height:auto;padding:10px}.brand{display:none}.nav{grid-template-columns:repeat(6,1fr)}.nav button{padding:10px 5px}.topbar{padding:0 15px}.clock{display:none}.content{padding:16px}.week-grid,.check-columns,.port-groups,.news-grid,.budget-grid,.webinar-grid,.webinar-checks{grid-template-columns:1fr}.grid{gap:12px}.travel-head{align-items:flex-start;flex-direction:column}}
+@media(max-width:720px){.app{display:block}.sidebar{position:static;height:auto;padding:10px}.brand{display:none}.nav{grid-template-columns:repeat(4,1fr)}.nav button{padding:10px 5px}.topbar{padding:0 15px}.clock{display:none}.content{padding:16px}.week-grid,.check-columns,.port-groups,.news-grid,.budget-grid{grid-template-columns:1fr}.grid{gap:12px}.travel-head{align-items:flex-start;flex-direction:column}}
+
+.transfer-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.transfer-summary .sum-box{padding:15px;border:1px solid var(--line);border-radius:15px;background:#fff;text-align:center}
+.transfer-summary strong{display:block;font-size:22px;color:#2d6dbb;margin-top:4px}
+.transfer-groups{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.transfer-group{border:1px solid var(--line);border-radius:16px;background:#fff;padding:14px}
+.transfer-group h4{margin:0 0 9px}
+.transfer-item{display:grid;grid-template-columns:24px 1fr 118px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px dashed #e7ebf0}
+.transfer-item:last-child{border-bottom:0}
+.transfer-item input[type="number"]{width:100%;text-align:right;padding:8px 9px}
+.transfer-item small{color:var(--muted);display:block;margin-top:3px}
+.transfer-item.done .transfer-name{text-decoration:line-through;color:#a4acb8}
+.card-table{width:100%;border-collapse:collapse;font-size:13px}
+.card-table th,.card-table td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.card-table th{background:#f7f9fc;color:#536175}
+.card-table input{width:110px;padding:7px;text-align:right}
+.money{font-variant-numeric:tabular-nums}
+.webinar-steps{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.webinar-step{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fbfdff}
+.webinar-step h4{margin:0 0 7px}
+.quick-links{display:flex;gap:8px;flex-wrap:wrap}
+.quick-links a{text-decoration:none}
+.shipping-note{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.shipping-box{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff}
+.shipping-box h4{margin:0 0 8px}
+@media(max-width:1100px){.transfer-summary{grid-template-columns:repeat(2,1fr)}.transfer-groups,.webinar-steps,.shipping-note{grid-template-columns:1fr}}
+@media(max-width:720px){.nav{grid-template-columns:repeat(4,1fr)}.transfer-summary{grid-template-columns:1fr}.transfer-item{grid-template-columns:24px 1fr 100px}}
+
 </style>
 </head>
 <body>
@@ -93,6 +121,8 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
     <div class="brand"><div class="logo">🚢</div><div><h1>MINHEE PORTAL</h1><small>CS & Family Final</small></div></div>
     <div class="nav">
       <button class="active" data-page="work">💼 <span>업무</span></button>
+      <button data-page="shipping">🚢 <span>해운동향</span></button>
+      <button data-page="webinar">🎤 <span>웨비나</span></button>
       <button data-page="family">👨‍👩‍👧‍👦 <span>가족</span></button>
       <button data-page="blog">📝 <span>블로그</span></button>
       <button data-page="english">🔤 <span>영어</span></button>
@@ -155,36 +185,56 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
             <div style="margin-top:15px"><div class="small">진행률 <b id="demText"></b></div><div class="progress"><div id="demBar"></div></div><input id="demRange" type="range" min="0" max="100" style="width:100%;margin-top:10px"></div>
           </div>
 
-          <div class="card col-12" id="webinarCard">
-            <div class="section-title"><div><h3>🎤 ZIM.com 웨비나 준비</h3><div class="desc">30분 한국어 발표 · 화주가 실제로 쓸 수 있는 Self-Service 기능 중심</div></div><span class="badge">발표 준비</span></div>
-            <div class="webinar-grid">
-              <div class="webinar-step"><h4>1. 시작 · 0–5분</h4><p><b>ZIM.com = Self-Service Portal</b><br>I Need 메뉴 → Schedules → Country Requirements로 “필요한 업무에서 바로 시작”하는 흐름을 소개.</p></div>
-              <div class="webinar-step"><h4>2. 핵심 · 5–18분</h4><p><b>Track my Shipment</b><br>B/L·Booking·Container 조회, 최대 10건 동시 조회, Shipment Overview, Notifications를 실제 화면으로 보여주기.</p></div>
-              <div class="webinar-step"><h4>3. 수입 실무 · 18–25분</h4><p><b>D&D · eContainer · Tare Weight · VGM</b><br>LFD/예상비용 Simulation, Empty Return, Tare Weight, VGM 제출 순서로 시연.</p></div>
-              <div class="webinar-step"><h4>4. 숨은 기능 · 25–28분</h4><p><b>Country Requirements · Customs · eZ Pickup · EcoData</b><br>국가별 제공 여부를 구분해서 “알아두면 좋은 기능”으로 짧게 소개.</p></div>
-              <div class="webinar-step"><h4>5. 마무리 · 28–30분</h4><p>“내 화물 어디?” → Tracking<br>“며칠에 찾으면 얼마?” → D&D Calculator<br>“공컨 어디 반납?” → eContainer로 정리.</p></div>
-              <div class="webinar-step"><h4>화주에게 강조할 포인트</h4><p>기능을 많이 보여주기보다 <b>CS에 문의하기 전에 고객이 직접 해결할 수 있는 것</b>을 중심으로 설명. 국가별 기능은 모든 지역 공통이라고 단정하지 않기.</p></div>
-            </div>
-            <div class="webinar-links">
-              <a class="btn soft" target="_blank" href="https://www.zim.com/ko">ZIM.com</a>
-              <a class="btn soft" target="_blank" href="https://www.zim.com/ko/tools/track-a-shipment">Track a Shipment</a>
-              <a class="btn soft" target="_blank" href="https://www.zim.com/ko/schedules">Schedules</a>
-              <a class="btn soft" target="_blank" href="https://www.zim.com/tools">Online Tools</a>
-            </div>
-            <div style="margin-top:16px"><h4 style="margin:0 0 10px">✅ 발표 준비 체크</h4>
-              <div class="webinar-checks">
-                <div class="webinar-check"><label><input class="checkbox webinar-check-input" data-key="ppt" type="checkbox"><span>30분 발표용 PPT 최종 검토</span></label></div>
-                <div class="webinar-check"><label><input class="checkbox webinar-check-input" data-key="translation" type="checkbox"><span>회사 원본 PDF 한국어 번역본 확인</span></label></div>
-                <div class="webinar-check"><label><input class="checkbox webinar-check-input" data-key="live" type="checkbox"><span>사이트 실시간 시연 순서 연습</span></label></div>
-                <div class="webinar-check"><label><input class="checkbox webinar-check-input" data-key="tracking" type="checkbox"><span>Tracking 다건 조회 데모 준비</span></label></div>
-                <div class="webinar-check"><label><input class="checkbox webinar-check-input" data-key="dd" type="checkbox"><span>D&D Calculator 데모 준비</span></label></div>
-                <div class="webinar-check"><label><input class="checkbox webinar-check-input" data-key="qa" type="checkbox"><span>예상 질문·답변 5개 정리</span></label></div>
-              </div>
-            </div>
-            <textarea id="webinarMemo" class="note" placeholder="발표 멘트 수정 / 시연할 B/L 예시 / 매니저 피드백 / 추가할 기능" style="margin-top:14px"></textarea>
-          </div>
-
           <div class="card col-12" id="workMemoCard"><h3>🗒️ 업무 메모</h3><textarea class="note" id="workMemo" placeholder="업무 메모는 현재 브라우저에 자동 저장됩니다. 회사 기밀정보는 가급적 입력하지 마세요."></textarea></div>
+        </div>
+      </section>
+
+
+      <section id="shipping" class="page">
+        <div class="hero"><h3>🚢 해운동향 브리핑</h3><p>영업부 공유 전 확인할 글로벌 해운·물류 특이사항과 에이전트 확인 포인트를 한곳에 정리해요.</p></div>
+        <div class="grid">
+          <div class="card col-12">
+            <div class="section-title"><div><h3>오늘 브리핑 정리</h3><div class="desc">ChatGPT에서 받은 데일리 브리핑 중 실제 업무에 필요한 내용만 옮겨 적는 공간입니다.</div></div><span class="badge">사실 / 판단 분리</span></div>
+            <div class="shipping-note">
+              <div class="shipping-box"><h4>🔴 긴급</h4><textarea id="shippingUrgent" class="note" style="min-height:180px"></textarea></div>
+              <div class="shipping-box"><h4>🟠 주의</h4><textarea id="shippingWatch" class="note" style="min-height:180px"></textarea></div>
+              <div class="shipping-box"><h4>🟢 참고</h4><textarea id="shippingRef" class="note" style="min-height:180px"></textarea></div>
+            </div>
+          </div>
+          <div class="card col-6"><h3>📨 도착지 에이전트 확인 질문</h3><textarea id="shippingAgentQ" class="note" placeholder="Please confirm whether..."></textarea></div>
+          <div class="card col-6"><h3>📌 영업부 공유용 3~5줄</h3><textarea id="shippingSales" class="note"></textarea></div>
+        </div>
+      </section>
+
+      <section id="webinar" class="page">
+        <div class="hero"><h3>🎤 ZIM.com 웨비나 준비</h3><p>30분 발표 흐름, 사이트 시연 순서, 체크리스트와 리허설 메모를 관리해요.</p></div>
+        <div class="grid">
+          <div class="card col-12">
+            <div class="section-title"><div><h3>30분 발표 흐름</h3><div class="desc">화주 입장에서 “무엇을 직접 해결할 수 있는가”를 중심으로 구성</div></div><span class="badge">ZIM.com</span></div>
+            <div class="webinar-steps">
+              <div class="webinar-step"><h4>1. Opening · 2분</h4><small>ZIM.com을 Self-Service Portal로 소개</small></div>
+              <div class="webinar-step"><h4>2. I Need / Navigation · 2분</h4><small>Dynamic Menu</small></div>
+              <div class="webinar-step"><h4>3. Track my Shipment · 4분</h4><small>최대 10개 Reference 동시 조회</small></div>
+              <div class="webinar-step"><h4>4. Overview · Documents · Notifications · 3분</h4><small>진행건·도착서류·알림</small></div>
+              <div class="webinar-step"><h4>5. Before Shipping · 3분</h4><small>Schedules · Country Requirements · Local Charges</small></div>
+              <div class="webinar-step"><h4>6. D&D Calculator · 4분</h4><small>LFD와 비용 Simulation</small></div>
+              <div class="webinar-step"><h4>7. Container Tools · 3분</h4><small>eContainer · Tare Weight · SOLAS VGM</small></div>
+              <div class="webinar-step"><h4>8. Destination Tools · 3분</h4><small>Customs · eZ Pickup · Invoice Simulation</small></div>
+              <div class="webinar-step"><h4>9. EcoData · 2분</h4><small>CO₂ / ESG 활용</small></div>
+              <div class="webinar-step"><h4>10. Wrap-up / Q&A · 4분</h4><small>핵심 기능 5개 정리</small></div>
+            </div>
+          </div>
+          <div class="card col-6">
+            <h3>🔗 시연 바로가기</h3>
+            <div class="quick-links">
+              <a class="btn" target="_blank" href="https://www.zim.com/ko">ZIM.com</a>
+              <a class="btn soft" target="_blank" href="https://www.zim.com/ko/tools/track-a-shipment">Track Shipment</a>
+              <a class="btn soft" target="_blank" href="https://www.zim.com/ko/schedules">Schedules</a>
+              <a class="btn soft" target="_blank" href="https://www.zim.com/tools">Tools</a>
+            </div>
+          </div>
+          <div class="card col-6"><h3>✅ 발표 준비 체크</h3><div id="webinarChecklist" class="list"></div></div>
+          <div class="card col-12"><h3>🗒️ 웨비나 리허설 메모</h3><textarea id="webinarMemo" class="note"></textarea></div>
         </div>
       </section>
 
@@ -263,20 +313,50 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
       </section>
 
       <section id="budget" class="page">
-        <div class="hero"><h3>💳 우리집 가계부</h3><p>최근 지출 흐름을 보고, 월별 생활비 목표와 실제 지출을 간단히 관리해요.</p></div>
+        <div class="hero"><h3>💳 우리집 가계부 · 25일 시작</h3><p>매일 쓰지 않고 월급날 중심으로 이번 달 보낼 돈·카드 고정비·변동비만 관리해요.</p></div>
         <div class="grid">
           <div class="card col-12">
-            <div class="section-title"><div><h3>📊 최근 3개월 지출</h3><div class="desc">예전에 공유한 카드/지출 화면의 단순 합산 대략치 · 만원 단위 · 경조사비 제외. 실제 소비와 자금이동은 직접 조정해 주세요.</div></div><span class="badge">수정 가능</span></div>
-            <div class="budget-grid">
-              <div class="budget-box"><label>2026년 4월</label><input id="budgetApr" type="number" min="0" value="676"><div class="small">만원</div></div>
-              <div class="budget-box"><label>2026년 5월</label><input id="budgetMay" type="number" min="0" value="977"><div class="small">만원</div></div>
-              <div class="budget-box"><label>2026년 6월</label><input id="budgetJun" type="number" min="0" value="962"><div class="small">만원</div></div>
+            <div class="section-title"><div><h3>💸 이번 달 이체 체크</h3><div class="desc">자동이체 포함. 체크하면 이체 완료로 계산되고 금액은 직접 수정할 수 있어요.</div></div><span class="badge">25일 필수 확인</span></div>
+            <div class="transfer-summary">
+              <div class="sum-box"><small>이체 예정 총액</small><strong id="transferTotal">0원</strong></div>
+              <div class="sum-box"><small>이체 완료</small><strong id="transferDone">0원</strong></div>
+              <div class="sum-box"><small>남은 이체</small><strong id="transferRemain">0원</strong></div>
+              <div class="sum-box"><small>완료율</small><strong id="transferPct">0%</strong></div>
             </div>
-            <div style="margin-top:16px" class="metric"><div><strong id="budgetAvg">-</strong><small>3개월 평균(만원)</small></div><div><strong id="budgetMax">-</strong><small>최고 지출(만원)</small></div><div><strong id="budgetGap">-</strong><small>월 목표 대비 평균 차이</small></div></div>
+            <div id="transferGroups" class="transfer-groups"></div>
           </div>
-          <div class="card col-6"><h3>🎯 월 생활비 목표</h3><div class="desc">현재 월 지출 800~900만원대를 기준으로 줄이고 싶은 목표를 직접 설정해요.</div><div class="budget-box"><label>목표 생활비 (만원)</label><input id="budgetTarget" type="number" min="0" value="800"></div><p class="budget-note">경조사비·대출상환·저축/투자·카드대금 이체 등은 실제 생활소비와 분리해서 보는 것이 좋아요.</p></div>
-          <div class="card col-6"><h3>🧾 이번 달 메모</h3><textarea id="budgetMemo" class="note" placeholder="고정비 / 식비 / 쇼핑 / 여행 / 교육비 / 줄이고 싶은 항목"></textarea></div>
-          <div class="card col-12"><h3>✅ 이번 달 체크</h3><div class="check-columns"><div class="check-box"><h4>먼저 확인</h4><label class="mini-row"><input class="checkbox budget-check" data-key="fixed" type="checkbox"><span>고정비와 변동비 분리</span></label><label class="mini-row"><input class="checkbox budget-check" data-key="transfer" type="checkbox"><span>카드대금·저축 등 자금이동 제외</span></label></div><div class="check-box"><h4>과소비 점검</h4><label class="mini-row"><input class="checkbox budget-check" data-key="food" type="checkbox"><span>식비·배달비 확인</span></label><label class="mini-row"><input class="checkbox budget-check" data-key="shopping" type="checkbox"><span>쇼핑/생활용품 확인</span></label></div><div class="check-box"><h4>다음 달 준비</h4><label class="mini-row"><input class="checkbox budget-check" data-key="event" type="checkbox"><span>여행·행사성 지출 따로 표시</span></label><label class="mini-row"><input class="checkbox budget-check" data-key="review" type="checkbox"><span>월말 실제 소비액 확정</span></label></div></div></div>
+          <div class="card col-12">
+            <div class="section-title"><div><h3>💳 카드별 고정결제</h3><div class="desc">고정비와 카드 결제예정액을 분리해서 확인합니다.</div></div><span class="badge">월 1회</span></div>
+            <table class="card-table">
+              <thead><tr><th>카드</th><th>고정결제 내역</th><th>고정 합계</th><th>결제예정액</th></tr></thead>
+              <tbody>
+                <tr><td><b>삼성</b></td><td>관리비 250,000 · 컬리페이 2,000 · 네이버 5,000 · 인터넷 30,000 · 정수기 17,000 · 영어학원 할부 180,000(이번 달 마지막)</td><td>484,000원</td><td><input class="card-due" data-card="samsung" type="number" min="0"></td></tr>
+                <tr><td><b>현대</b></td><td>도시가스 30,000 · 윌라 10,000 · 남편 핸드폰 40,000</td><td>80,000원</td><td><input class="card-due" data-card="hyundai" type="number" min="0"></td></tr>
+                <tr><td><b>하나</b></td><td>남편 핸드폰 80,000</td><td>80,000원</td><td><input class="card-due" data-card="hana" type="number" min="0"></td></tr>
+                <tr><td><b>신한</b></td><td>고정결제 추가 확인</td><td>-</td><td><input class="card-due" data-card="shinhan" type="number" min="0"></td></tr>
+                <tr><td><b>KB국민</b></td><td>고정결제 없음 · 할인용</td><td>-</td><td><input class="card-due" data-card="kb" type="number" min="0"></td></tr>
+                <tr><td><b>롯데</b></td><td>고정결제 없음 · 할인용</td><td>-</td><td><input class="card-due" data-card="lotte" type="number" min="0"></td></tr>
+              </tbody>
+            </table>
+            <div class="metric" style="margin-top:14px">
+              <div><strong>644,000원</strong><small>등록 카드 고정비</small></div>
+              <div><strong id="cardDueTotal">0원</strong><small>결제예정액 합계</small></div>
+              <div><strong>279,000원</strong><small>농협 가족계좌 → 삼성카드</small></div>
+            </div>
+          </div>
+          <div class="card col-7">
+            <h3>🛒 이번 달 변동 생활비</h3><div class="desc">매일 적지 않고 주 1회 또는 월 1회 합산</div>
+            <div class="budget-grid">
+              <div class="budget-box"><label>식비·배달</label><input class="variable-spend" data-key="food" type="number" value="0"></div>
+              <div class="budget-box"><label>쇼핑·생활용품</label><input class="variable-spend" data-key="shopping" type="number" value="0"></div>
+              <div class="budget-box"><label>주유·코스트코</label><input class="variable-spend" data-key="costco" type="number" value="0"></div>
+              <div class="budget-box"><label>추가 교육비</label><input class="variable-spend" data-key="edu" type="number" value="0"></div>
+              <div class="budget-box"><label>여행·행사성</label><input class="variable-spend" data-key="event" type="number" value="0"></div>
+              <div class="budget-box"><label>기타</label><input class="variable-spend" data-key="other" type="number" value="0"></div>
+            </div>
+            <div class="metric" style="margin-top:14px"><div><strong id="variableTotal">0원</strong><small>변동비 합계</small></div><div><strong id="monthlyKnownTotal">0원</strong><small>이체예정 + 변동비</small></div><div><strong>25일</strong><small>가계부 기준일</small></div></div>
+          </div>
+          <div class="card col-5"><h3>📝 이번 달 메모</h3><div class="tip"><b>원칙</b><small>매일 기록하지 않기 · 주 1회/월 1회 · 25일은 꼭 확인</small></div><div class="tip"><b>저축/투자</b><small>한투·토스·업비트·연금·청약은 생활소비와 분리</small></div><textarea id="budgetMemo" class="note"></textarea></div>
         </div>
       </section>
 
@@ -294,6 +374,8 @@ const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return
 const set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 const pageMeta={
  work:["업무 포털","자주 쓰는 업무 도구와 메일을 한곳에서 관리해요."],
+ shipping:["해운동향","영업부 공유용 글로벌 해운·물류 이슈를 정리해요."],
+ webinar:["ZIM.com 웨비나","30분 발표 흐름과 시연·리허설을 준비해요."],
  family:["가족 포털","아이 성장, 여행 준비, 일정과 쇼핑을 관리해요."],
  blog:["블로그 포털","오늘의 한편 글감과 진행 상태를 관리해요."],
  english:["영어 포털","업무 표현과 복습 내용을 모아두어요."],
@@ -311,15 +393,15 @@ let workLinks=get("v2WorkLinks",[
  {icon:"💬",title:"Teams",desc:"팀 커뮤니케이션",url:"https://teams.microsoft.com/"},
  {icon:"📊",title:"D&D Report",desc:"Demurrage 현황",url:"#"},
  {icon:"📧",title:"메일 템플릿",desc:"메일 검색·복사",action:"templates"},
- {icon:"🗒️",title:"업무 메모",desc:"메모 작성",action:"memo"},
- {icon:"🎤",title:"ZIM.com 웨비나",desc:"30분 발표 준비",action:"webinar"}
+ {icon:"🗒️",title:"업무 메모",desc:"메모 작성",action:"memo"}
 ]);
-function ensureWebinarShortcut(){if(!workLinks.some(x=>x.action==="webinar")){workLinks.push({icon:"🎤",title:"ZIM.com 웨비나",desc:"30분 발표 준비",action:"webinar"});set("v2WorkLinks",workLinks)}}
-ensureWebinarShortcut();
+if(!workLinks.some(x=>x.action==="webinar")) workLinks.push({icon:"🎤",title:"ZIM.com 웨비나",desc:"30분 발표·시연 준비",action:"webinar"});
+if(!workLinks.some(x=>x.action==="shipping")) workLinks.push({icon:"🌍",title:"해운동향",desc:"데일리 물류 브리핑",action:"shipping"});
+set("v2WorkLinks",workLinks);
 function renderWork(){
  $("#workShortcuts").innerHTML=workLinks.map((x,i)=>`<button class="shortcut" onclick="openWork(${i})"><span class="edit" onclick="event.stopPropagation();editWork(${i})">✎</span><span class="ico">${x.icon}</span><strong>${x.title}</strong><small>${x.desc}</small></button>`).join("")
 }
-function openWork(i){const x=workLinks[i];if(x.url&&x.url!="#")window.open(x.url,"_blank");else if(x.action==="ports")$("#port-main").scrollIntoView();else if(x.action==="templates")$("#templateSearch").scrollIntoView();else if(x.action==="memo")$("#workMemoCard").scrollIntoView();else if(x.action==="webinar")$("#webinarCard").scrollIntoView({behavior:"smooth"})}
+function openWork(i){const x=workLinks[i];if(x.url&&x.url!="#")window.open(x.url,"_blank");else if(x.action==="ports")$("#port-main").scrollIntoView();else if(x.action==="templates")$("#templateSearch").scrollIntoView();else if(x.action==="memo")$("#workMemoCard").scrollIntoView();else if(x.action==="webinar")document.querySelector('[data-page="webinar"]').click();else if(x.action==="shipping")document.querySelector('[data-page="shipping"]').click()}
 function editWork(i){openModal("바로가기 수정",`<input id="mIcon" value="${workLinks[i].icon}"><input id="mTitle2" value="${workLinks[i].title}" style="margin-top:8px"><input id="mDesc" value="${workLinks[i].desc}" style="margin-top:8px"><input id="mUrl" value="${workLinks[i].url||""}" placeholder="https://..." style="margin-top:8px">`,()=>{workLinks[i].icon=$("#mIcon").value;workLinks[i].title=$("#mTitle2").value;workLinks[i].desc=$("#mDesc").value;workLinks[i].url=$("#mUrl").value||workLinks[i].url;set("v2WorkLinks",workLinks);renderWork()})} renderWork();
 
 let todos=get("v2Todos",get("todos",[{text:"D&D Report 확인",done:false},{text:"해운동향 뉴스 확인",done:false},{text:"Outlook 메일 확인",done:false},{text:"첫째 눈높이 숙제 확인",done:false},{text:"독서통장 확인",done:false},{text:"씽씽앱 확인",done:false}]));
@@ -348,8 +430,8 @@ renderTemplates();
 
 demRange.value=localStorage.getItem("v2DemProgress")||100;function updateDem(){demBar.style.width=demRange.value+"%";demText.textContent=demRange.value+"%";localStorage.setItem("v2DemProgress",demRange.value)}demRange.oninput=updateDem;updateDem();
 
-function autoText(id,key){const el=$("#"+id);el.value=localStorage.getItem(key)||"";el.oninput=()=>localStorage.setItem(key,el.value)}
-autoText("workMemo","v2WorkMemo");autoText("webinarMemo","v2WebinarMemo");autoText("shippingMemo","v2ShippingMemo");autoText("firstMemo","v2FirstMemo");autoText("secondMemo","v2SecondMemo");autoText("montessoriMemo","v2MontessoriMemo");autoText("blogMemo","v2BlogMemo");autoText("englishMemo","v2EnglishMemo");autoText("budgetMemo","v2BudgetMemo");
+function autoText(id,key){const el=$("#"+id);if(!el)return;el.value=localStorage.getItem(key)||"";el.oninput=()=>localStorage.setItem(key,el.value)}
+autoText("workMemo","v2WorkMemo");autoText("shippingUrgent","v3ShippingUrgent");autoText("shippingWatch","v3ShippingWatch");autoText("shippingRef","v3ShippingRef");autoText("shippingAgentQ","v3ShippingAgentQ");autoText("shippingSales","v3ShippingSales");autoText("webinarMemo","v3WebinarMemo");autoText("firstMemo","v2FirstMemo");autoText("secondMemo","v2SecondMemo");autoText("montessoriMemo","v2MontessoriMemo");autoText("blogMemo","v2BlogMemo");autoText("englishMemo","v2EnglishMemo");autoText("budgetMemo","v2BudgetMemo");
 $$(".child-note").forEach(el=>{el.value=localStorage.getItem(el.dataset.key)||"";el.oninput=()=>localStorage.setItem(el.dataset.key,el.value)});
 
 const checklistDefaults={
@@ -399,16 +481,29 @@ function addCustomPort(){openModal("항만 사이트 추가",`<select id="mPort"
 function renderCustomPorts(){let arr=get("v2CustomPorts",[]);["busan","incheon","gwangyang"].forEach(p=>{$("#custom"+p[0].toUpperCase()+p.slice(1)).innerHTML=arr.filter(x=>x.port===p).map(x=>`<a class="port-link" target="_blank" href="${x.url}">${x.name}</a>`).join("")})}
 function editQuickLink(type){openModal("인천항 사이트 주소 등록",`<input id="mName" value="인천항 선석배정"><input id="mLink" placeholder="https://..." style="margin-top:8px">`,()=>{let arr=get("v2CustomPorts",[]);arr.push({port:"incheon",name:mName.value,url:mLink.value});set("v2CustomPorts",arr);renderCustomPorts()})}renderCustomPorts();
 
-// ZIM.com 웨비나 준비 체크
-let webinarChecks=get("v2WebinarChecks",{});
-$$('.webinar-check-input').forEach(el=>{el.checked=!!webinarChecks[el.dataset.key];el.onchange=()=>{webinarChecks[el.dataset.key]=el.checked;set("v2WebinarChecks",webinarChecks)}});
 
-// 가계부
-const budgetInputs=["budgetApr","budgetMay","budgetJun","budgetTarget"];
-budgetInputs.forEach(id=>{const el=$("#"+id);const saved=localStorage.getItem("v2_"+id);if(saved!==null)el.value=saved;el.oninput=()=>{localStorage.setItem("v2_"+id,el.value);updateBudget()}});
-let budgetChecks=get("v2BudgetChecks",{});
-$$('.budget-check').forEach(el=>{el.checked=!!budgetChecks[el.dataset.key];el.onchange=()=>{budgetChecks[el.dataset.key]=el.checked;set("v2BudgetChecks",budgetChecks)}});
-function updateBudget(){const vals=[+budgetApr.value||0,+budgetMay.value||0,+budgetJun.value||0];const avg=Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);const max=Math.max(...vals);const target=+budgetTarget.value||0;budgetAvg.textContent=avg;budgetMax.textContent=max;const gap=avg-target;budgetGap.textContent=(gap>0?"+":"")+gap+"만원";} updateBudget();
+const webinarDefaults=["회사 제공 PDF 한국어 내용 재확인","발표용 PPT 최종본 확인","ZIM.com 로그인/시연 화면 확인","Tracking 테스트 동선 연습","D&D Calculator 시연 연습","Country Requirements 위치 확인","eContainer/Tare Weight/VGM 위치 확인","예상 화주 질문 5개 준비","30분 타이머로 최종 리허설"];
+let webinarChecks=get("v3WebinarChecks",{});
+function renderWebinarChecks(){const root=$("#webinarChecklist");if(!root)return;root.innerHTML=webinarDefaults.map((t,i)=>`<div class="row ${webinarChecks[i]?"done":""}"><input class="checkbox" type="checkbox" ${webinarChecks[i]?"checked":""} onchange="webinarChecks[${i}]=this.checked;set('v3WebinarChecks',webinarChecks);renderWebinarChecks()"><span class="txt">${t}</span></div>`).join("")}renderWebinarChecks();
+
+const transferDefaults=[
+ {group:"보험·연금",items:[["보험",180000,""],["아이 보험 1",60000,""],["아이 보험 2",60000,""],["연금 (미래)",100000,"저축/자산"],["치치 치아보험 (우리)",20000,""],["치치 연금 (SC)",100000,"저축/자산"]]},
+ {group:"계비·모임",items:[["친정",100000,""],["시골",100000,""],["숙경부장님",50000,""],["유나네",100000,""],["치치동창",20000,""]]},
+ {group:"주거·대출",items:[["주택대출",1770000,""],["신용대출",140000,""]]},
+ {group:"남편 관련",items:[["교통비",100000,""],["용돈",300000,""],["자동차보험 (농협)",40000,""],["치치 보험 (농협)",140000,""]]},
+ {group:"저축·투자",items:[["한투",100000,"저축/자산"],["토스증권",30000,"저축/자산"],["업비트",100000,"저축/자산"],["청약2",0,"금액 입력"],["로윤청약2",0,"금액 입력"],["지우청약2",0,"금액 입력"]]},
+ {group:"아이·교육",items:[["등하원비",1000000,""],["유치원",70000,"자동이체"],["태권도",190000,"직접이체"],["수영",160000,"직접이체"],["눈높이",88000,"자동이체"],["어린이집",30000,"자동이체"]]},
+ {group:"카드 이체 메모",items:[["농협 가족계좌 → 삼성카드",279000,"별도 이체 체크"]]}
+];
+let transferState=get("v3TransferState",{});
+function fmtWon(v){return Math.round(+v||0).toLocaleString("ko-KR")+"원"}
+function getTransferRows(){let rows=[];transferDefaults.forEach((g,gi)=>g.items.forEach((it,ii)=>{const k=gi+"_"+ii;const st=transferState[k]||{};rows.push({amount:st.amount!==undefined?+st.amount:+it[1],done:!!st.done})}));return rows}
+function renderTransfers(){const root=$("#transferGroups");if(!root)return;root.innerHTML=transferDefaults.map((g,gi)=>`<div class="transfer-group"><h4>${g.group}</h4>${g.items.map((it,ii)=>{const key=gi+"_"+ii;const st=transferState[key]||{};const amount=st.amount!==undefined?st.amount:it[1];const done=!!st.done;return `<div class="transfer-item ${done?"done":""}"><input class="checkbox transfer-check" data-key="${key}" type="checkbox" ${done?"checked":""}><div class="transfer-name"><b>${it[0]}</b>${it[2]?`<small>${it[2]}</small>`:""}</div><input class="transfer-amount" data-key="${key}" type="number" min="0" value="${amount}"></div>`}).join("")}</div>`).join("");$$(".transfer-check").forEach(el=>el.onchange=()=>{const k=el.dataset.key;transferState[k]=transferState[k]||{};transferState[k].done=el.checked;set("v3TransferState",transferState);renderTransfers()});$$(".transfer-amount").forEach(el=>el.oninput=()=>{const k=el.dataset.key;transferState[k]=transferState[k]||{};transferState[k].amount=+el.value||0;set("v3TransferState",transferState);updateTransferSummary()});updateTransferSummary()}
+function updateTransferSummary(){const rows=getTransferRows();const total=rows.reduce((s,x)=>s+x.amount,0);const done=rows.filter(x=>x.done).reduce((s,x)=>s+x.amount,0);if($("#transferTotal"))transferTotal.textContent=fmtWon(total);if($("#transferDone"))transferDone.textContent=fmtWon(done);if($("#transferRemain"))transferRemain.textContent=fmtWon(total-done);if($("#transferPct"))transferPct.textContent=total?Math.round(done/total*100)+"%":"0%";updateMonthlyKnown()}
+renderTransfers();
+$$(".card-due").forEach(el=>{const k="v3CardDue_"+el.dataset.card;const s=localStorage.getItem(k);if(s!==null)el.value=s;el.oninput=()=>{localStorage.setItem(k,el.value);updateCardDue()}});function updateCardDue(){const total=$$(".card-due").reduce((s,e)=>s+(+e.value||0),0);if($("#cardDueTotal"))cardDueTotal.textContent=fmtWon(total)}updateCardDue();
+$$(".variable-spend").forEach(el=>{const k="v3Variable_"+el.dataset.key;const s=localStorage.getItem(k);if(s!==null)el.value=s;el.oninput=()=>{localStorage.setItem(k,el.value);updateVariable()}});function updateVariable(){const total=$$(".variable-spend").reduce((s,e)=>s+(+e.value||0),0);if($("#variableTotal"))variableTotal.textContent=fmtWon(total);updateMonthlyKnown()}function updateMonthlyKnown(){if(!$("#monthlyKnownTotal"))return;const transfer=getTransferRows().reduce((s,x)=>s+x.amount,0);const variable=$$(".variable-spend").reduce((s,e)=>s+(+e.value||0),0);monthlyKnownTotal.textContent=fmtWon(transfer+variable)}updateVariable();
+
 </script>
 </body>
 </html>
