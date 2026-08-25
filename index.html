@@ -113,6 +113,13 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
 @media(max-width:1100px){.transfer-summary{grid-template-columns:repeat(2,1fr)}.transfer-groups,.webinar-steps,.shipping-note{grid-template-columns:1fr}}
 @media(max-width:720px){.nav{grid-template-columns:repeat(4,1fr)}.transfer-summary{grid-template-columns:1fr}.transfer-item{grid-template-columns:24px 1fr 100px}}
 
+
+.bank-transfer-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.bank-transfer-box{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fbfdff}
+.bank-transfer-box h4{margin:0 0 5px}
+.bank-total{font-size:21px;font-weight:900;color:#2d6dbb;margin:4px 0 8px}
+.bank-master{display:flex;align-items:center;gap:8px;padding-top:8px;border-top:1px dashed var(--line)}
+
 </style>
 </head>
 <body>
@@ -335,6 +342,38 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
           </div>
 
           <div class="card col-12">
+            <div class="section-title">
+              <div>
+                <h3>🏦 은행별로 먼저 보내둘 돈</h3>
+                <div class="desc">내 계좌와 남편 계좌를 따로 보고, 월급날 각 은행에 필요한 금액을 먼저 보내둡니다.</div>
+              </div>
+              <span class="badge">내 계좌 / 남편 계좌</span>
+            </div>
+
+            <div class="week-grid">
+              <div class="child-card">
+                <h4>👩 내 계좌</h4>
+                <div id="myBankTransferGrid" class="bank-transfer-grid"></div>
+              </div>
+              <div class="child-card">
+                <h4>👨 남편 계좌</h4>
+                <div id="husbandBankTransferGrid" class="bank-transfer-grid"></div>
+              </div>
+            </div>
+
+            <div class="metric" style="margin-top:14px">
+              <div><strong id="myBankTotal">0원</strong><small>내 계좌 송금 총액</small></div>
+              <div><strong id="husbandBankTotal">0원</strong><small>남편 계좌 송금 총액</small></div>
+              <div><strong id="allBankTotal">0원</strong><small>전체 은행 송금 총액</small></div>
+            </div>
+
+            <div class="tip">
+              <b>자동 연결</b>
+              <small>토스 197만원은 주택대출 177만원 + 유치원 7만원 + 유나네계비 10만원 + 어린이집 3만원과 연결되어 있어, 토스 송금 완료를 체크하면 해당 개별 항목도 자동 체크됩니다.</small>
+            </div>
+          </div>
+
+          <div class="card col-12">
             <div class="section-title"><div><h3>💸 이번 달 이체 체크</h3><div class="desc">자동이체 포함. 체크하면 이체 완료로 계산됩니다. 저축·투자는 아래 합계에서 생활비와 자동 분리됩니다.</div></div><span class="badge">25일 필수 확인</span></div>
             <div class="transfer-summary">
               <div class="sum-box"><small>이체 예정 총액</small><strong id="transferTotal">0원</strong></div>
@@ -350,8 +389,8 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
             <table class="card-table">
               <thead><tr><th>카드</th><th>고정결제 내역</th><th>고정 합계</th><th>결제예정액</th></tr></thead>
               <tbody>
-                <tr><td><b>삼성</b></td><td>관리비 250,000 · 컬리페이 2,000 · 네이버 5,000 · 인터넷 30,000 · 정수기 17,000 · 영어학원 할부 180,000(이번 달 마지막)</td><td>484,000원</td><td><input class="card-due" data-card="samsung" type="number" min="0"></td></tr>
-                <tr><td><b>현대</b></td><td>도시가스 30,000 · 윌라 10,000 · 남편 핸드폰 40,000</td><td>80,000원</td><td><input class="card-due" data-card="hyundai" type="number" min="0"></td></tr>
+                <tr><td><b>삼성(국민)</b></td><td>관리비 250,000 · 컬리페이 2,000 · 네이버 5,000 · 인터넷 30,000 · 정수기 17,000 · 영어학원 할부 180,000(이번 달 마지막)</td><td>484,000원</td><td><input class="card-due" data-card="samsung" type="number" min="0"></td></tr>
+                <tr><td><b>현대(SC)</b></td><td>도시가스 30,000 · 윌라 10,000 · 남편 핸드폰 40,000</td><td>80,000원</td><td><input class="card-due" data-card="hyundai" type="number" min="0"></td></tr>
                 <tr><td><b>신한</b></td><td>고정결제 추가 확인</td><td>-</td><td><input class="card-due" data-card="shinhan" type="number" min="0"></td></tr>
                 <tr><td><b>KB국민</b></td><td>고정결제 없음 · 할인용</td><td>-</td><td><input class="card-due" data-card="kb" type="number" min="0"></td></tr>
                 <tr><td><b>롯데</b></td><td>고정결제 없음 · 할인용</td><td>-</td><td><input class="card-due" data-card="lotte" type="number" min="0"></td></tr>
@@ -534,84 +573,203 @@ function renderWebinarChecks(){const root=$("#webinarChecklist");if(!root)return
 
 const transferDefaults=[
  {group:"보험·연금",items:[
-  ["보험",180000,"living",""],["아이 보험 1",60000,"living",""],["아이 보험 2",60000,"living",""],
-  ["연금 (미래)",100000,"saving","저축/자산"],["치치 치아보험 (우리)",20000,"living",""],["치치 연금 (SC)",100000,"saving","저축/자산"]
+  ["insurance","보험",180000,"living","",null],
+  ["child_ins1","아이 보험 1",60000,"living","",null],
+  ["child_ins2","아이 보험 2",60000,"living","",null],
+  ["mirae_pension","연금 (미래)",100000,"saving","저축/자산","my_mirae"],
+  ["dental_woori","치치 치아보험 (우리)",20000,"living","","husband_woori"],
+  ["pension_sc","치치 연금 (SC)",100000,"saving","저축/자산","husband_sc"]
  ]},
  {group:"계비·모임",items:[
-  ["친정",100000,"living",""],["시골",100000,"living",""],["숙경부장님",50000,"living",""],["유나네",100000,"living",""],["치치동창",20000,"living",""]
+  ["parents","친정",100000,"living","",null],
+  ["country","시골",100000,"living","",null],
+  ["sukgyeong","숙경부장님",50000,"living","",null],
+  ["yuna","유나네",100000,"living","","my_toss"],
+  ["alumni","치치동창",20000,"living","",null]
  ]},
  {group:"주거·대출",items:[
-  ["주택대출",1770000,"living",""],["신용대출",140000,"living",""]
+  ["housing_loan","주택대출",1770000,"living","","my_toss"],
+  ["credit_loan","신용대출",140000,"living","",null]
  ]},
  {group:"남편 관련",items:[
-  ["교통비",100000,"living",""],["용돈",300000,"living",""],["자동차보험 (농협)",40000,"living",""],["치치 보험 (농협)",140000,"living",""]
+  ["transport","교통비",100000,"living","",null],
+  ["allowance","용돈",300000,"living","",null],
+  ["car_ins_nh","자동차보험 (농협)",40000,"living","","husband_nonghyup"],
+  ["chichi_ins_nh","치치 보험 (농협)",140000,"living","","husband_nonghyup"]
  ]},
  {group:"저축·투자",items:[
-  ["한투",100000,"saving","저축/자산"],["토스증권",30000,"saving","저축/자산"],["업비트",100000,"saving","저축/자산"],
-  ["청약",20000,"saving","월 2만원"],["로윤청약",20000,"saving","월 2만원"],["지우청약",20000,"saving","월 2만원"]
+  ["hantoo","한투",100000,"saving","저축/자산","my_hantoo"],
+  ["toss_stock","토스증권",30000,"saving","저축/자산",null],
+  ["upbit","업비트",100000,"saving","저축/자산",null],
+  ["subscription","청약",20000,"saving","월 2만원",null],
+  ["royoon_sub","로윤청약",20000,"saving","월 2만원",null],
+  ["jiwoo_sub","지우청약",20000,"saving","월 2만원",null]
  ]},
  {group:"아이·교육",items:[
-  ["등하원비",1000000,"living",""],["유치원",70000,"living","자동이체"],["태권도",190000,"living","직접이체"],
-  ["수영",160000,"living","직접이체"],["눈높이",88000,"living","자동이체"],["어린이집",30000,"living","자동이체"]
+  ["pickup","등하원비",1000000,"living","",null],
+  ["kindergarten","유치원",70000,"living","자동이체","my_toss"],
+  ["taekwondo","태권도",190000,"living","직접이체",null],
+  ["swimming","수영",160000,"living","직접이체",null],
+  ["eyelevel","눈높이",88000,"living","자동이체",null],
+  ["daycare","어린이집",30000,"living","자동이체","my_toss"]
  ]},
  {group:"카드 이체 메모",items:[
-  ["농협 가족계좌 → 삼성카드",279000,"living","별도 이체 체크"]
+  ["samsung_nh","농협 가족계좌 → 삼성카드",279000,"living","별도 이체 체크",null]
  ]}
 ];
 let transferState=get("v3TransferState",{});
 
 function fmtWon(v){return Math.round(+v||0).toLocaleString("ko-KR")+"원"}
 
+// 이전 버전 gi_ii 키를 새 고정 ID로 1회 마이그레이션
+(function migrateTransferState(){
+ let changed=false;
+ transferDefaults.forEach((g,gi)=>g.items.forEach((it,ii)=>{
+   const oldKey=gi+"_"+ii, newKey=it[0];
+   if(transferState[oldKey]!==undefined && transferState[newKey]===undefined){
+     transferState[newKey]=transferState[oldKey];
+     changed=true;
+   }
+ }));
+ if(changed)set("v3TransferState",transferState);
+})();
+
 function getTransferRows(){
  let rows=[];
- transferDefaults.forEach((g,gi)=>g.items.forEach((it,ii)=>{
-   const k=gi+"_"+ii; const st=transferState[k]||{};
+ transferDefaults.forEach(g=>g.items.forEach(it=>{
+   const id=it[0], st=transferState[id]||{};
    rows.push({
-     amount:st.amount!==undefined?+st.amount:+it[1],
+     id:id,
+     name:it[1],
+     amount:st.amount!==undefined?+st.amount:+it[2],
      done:!!st.done,
-     type:it[2],
-     name:it[0]
+     type:it[3],
+     note:it[4],
+     bank:it[5]
    });
  }));
  return rows;
 }
 
+const accountBankDefs={
+ my:[
+  {id:"my_toss",name:"토스",amount:1970000,links:["housing_loan","kindergarten","yuna","daycare"]},
+  {id:"my_nonghyup",name:"농협",amount:180000,links:[]},
+  {id:"my_kb",name:"국민",amount:20000,links:[]},
+  {id:"my_kakao",name:"카카오뱅크",amount:50000,links:[]},
+  {id:"my_woori_dues",name:"우리은행(계비)",amount:100000,links:[]},
+  {id:"my_mom_mg",name:"엄마 새마을금고",amount:1000000,links:[]},
+  {id:"my_hantoo",name:"한투",amount:100000,links:["hantoo"]},
+  {id:"my_kbank",name:"케이뱅크",amount:100000,links:[]},
+  {id:"my_mirae",name:"미래에셋",amount:100000,links:["mirae_pension"]}
+ ],
+ husband:[
+  {id:"husband_woori",name:"우리",amount:20000,links:["dental_woori"]},
+  {id:"husband_nonghyup",name:"농협",amount:180000,links:["car_ins_nh","chichi_ins_nh"]},
+  {id:"husband_kakao",name:"카카오",amount:120000,links:[]},
+  {id:"husband_kbank",name:"케이뱅크",amount:140000,links:[]},
+  {id:"husband_sc",name:"SC",amount:100000,links:["pension_sc"]},
+  {id:"husband_shinhan",name:"신한",amount:100000,links:[]}
+ ]
+};
+let accountBankState=get("v4AccountBankState",{});
+
+function renderOneAccountBanks(rootId,defs){
+ const root=$("#"+rootId); if(!root)return;
+ root.innerHTML=defs.map(bank=>{
+   const done=!!accountBankState[bank.id];
+   return `<div class="bank-transfer-box">
+     <h4>${bank.name}</h4>
+     <div class="bank-total">${fmtWon(bank.amount)}</div>
+     <label class="bank-master">
+       <input class="checkbox account-bank-check" data-bank-id="${bank.id}" type="checkbox" ${done?"checked":""}>
+       <span>${bank.name} 송금 완료</span>
+     </label>
+   </div>`;
+ }).join("");
+}
+
+function renderBankTransfers(){
+ renderOneAccountBanks("myBankTransferGrid",accountBankDefs.my);
+ renderOneAccountBanks("husbandBankTransferGrid",accountBankDefs.husband);
+
+ const myTotal=accountBankDefs.my.reduce((s,x)=>s+x.amount,0);
+ const husbandTotal=accountBankDefs.husband.reduce((s,x)=>s+x.amount,0);
+ if($("#myBankTotal"))myBankTotal.textContent=fmtWon(myTotal);
+ if($("#husbandBankTotal"))husbandBankTotal.textContent=fmtWon(husbandTotal);
+ if($("#allBankTotal"))allBankTotal.textContent=fmtWon(myTotal+husbandTotal);
+
+ $$(".account-bank-check").forEach(el=>el.onchange=()=>{
+   const id=el.dataset.bankId;
+   const bank=[...accountBankDefs.my,...accountBankDefs.husband].find(x=>x.id===id);
+   accountBankState[id]=el.checked;
+   set("v4AccountBankState",accountBankState);
+
+   if(bank?.links?.length){
+     bank.links.forEach(itemId=>{
+       transferState[itemId]=transferState[itemId]||{};
+       transferState[itemId].done=el.checked;
+     });
+     set("v3TransferState",transferState);
+     renderTransfers();
+   }else{
+     renderBankTransfers();
+   }
+ });
+}
+
 function renderTransfers(){
  const root=$("#transferGroups"); if(!root)return;
- root.innerHTML=transferDefaults.map((g,gi)=>`<div class="transfer-group"><h4>${g.group}</h4>${g.items.map((it,ii)=>{
-   const key=gi+"_"+ii; const st=transferState[key]||{};
-   const amount=st.amount!==undefined?st.amount:it[1]; const done=!!st.done;
-   const typeBadge=it[2]==="saving"?" · 저축/투자":"";
+ root.innerHTML=transferDefaults.map(g=>`<div class="transfer-group"><h4>${g.group}</h4>${g.items.map(it=>{
+   const id=it[0], st=transferState[id]||{};
+   const amount=st.amount!==undefined?st.amount:it[2], done=!!st.done;
+   const typeBadge=it[3]==="saving"?" · 저축/투자":"";
    return `<div class="transfer-item ${done?"done":""}">
-     <input class="checkbox transfer-check" data-key="${key}" type="checkbox" ${done?"checked":""}>
-     <div class="transfer-name"><b>${it[0]}</b><small>${(it[3]||"")}${typeBadge}</small></div>
-     <input class="transfer-amount" data-key="${key}" type="number" min="0" value="${amount}">
+     <input class="checkbox transfer-check" data-key="${id}" type="checkbox" ${done?"checked":""}>
+     <div class="transfer-name"><b>${it[1]}</b><small>${(it[4]||"")}${typeBadge}</small></div>
+     <input class="transfer-amount" data-key="${id}" type="number" min="0" value="${amount}">
    </div>`;
  }).join("")}</div>`).join("");
 
  $$(".transfer-check").forEach(el=>el.onchange=()=>{
-   const k=el.dataset.key; transferState[k]=transferState[k]||{};
-   transferState[k].done=el.checked; set("v3TransferState",transferState);
+   const id=el.dataset.key;
+   transferState[id]=transferState[id]||{};
+   transferState[id].done=el.checked;
+   set("v3TransferState",transferState);
+
+   // 연결된 은행 체크도 자동 동기화
+   [...accountBankDefs.my,...accountBankDefs.husband].forEach(bank=>{
+     if(bank.links.includes(id)){
+       accountBankState[bank.id]=bank.links.every(linkId=>!!(transferState[linkId]||{}).done);
+     }
+   });
+   set("v4AccountBankState",accountBankState);
    renderTransfers();
  });
 
  $$(".transfer-amount").forEach(el=>el.oninput=()=>{
-   const k=el.dataset.key; transferState[k]=transferState[k]||{};
-   transferState[k].amount=+el.value||0; set("v3TransferState",transferState);
+   const id=el.dataset.key;
+   transferState[id]=transferState[id]||{};
+   transferState[id].amount=+el.value||0;
+   set("v3TransferState",transferState);
    updateAllBudget();
  });
+
  updateAllBudget();
+ renderBankTransfers();
 }
 
 function updateTransferSummary(){
  const rows=getTransferRows();
  const total=rows.reduce((s,x)=>s+x.amount,0);
  const done=rows.filter(x=>x.done).reduce((s,x)=>s+x.amount,0);
- if($("#transferTotal")) transferTotal.textContent=fmtWon(total);
- if($("#transferDone")) transferDone.textContent=fmtWon(done);
- if($("#transferRemain")) transferRemain.textContent=fmtWon(total-done);
- if($("#transferPct")) transferPct.textContent=total?Math.round(done/total*100)+"%":"0%";
+ if($("#transferTotal"))transferTotal.textContent=fmtWon(total);
+ if($("#transferDone"))transferDone.textContent=fmtWon(done);
+ if($("#transferRemain"))transferRemain.textContent=fmtWon(total-done);
+ if($("#transferPct"))transferPct.textContent=total?Math.round(done/total*100)+"%":"0%";
 }
+
+renderTransfers();
 
 $$(".card-due").forEach(el=>{
  const k="v3CardDue_"+el.dataset.card;
