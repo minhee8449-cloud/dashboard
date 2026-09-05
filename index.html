@@ -332,7 +332,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
             <div class="metric" style="margin-top:14px">
               <div><strong id="incomeTotal">0원</strong><small>총수입</small></div>
               <div><strong id="livingExpenseTotal">0원</strong><small>생활지출</small></div>
-              <div><strong id="savingsTotal">0원</strong><small>저축·투자</small></div>
+              <div><strong id="savingsTotal">0원</strong><small>저축·투자 예정</small></div>
             </div>
             <div class="metric" style="margin-top:10px">
               <div><strong id="remainingCash">0원</strong><small>총수입 - 생활지출 - 저축·투자</small></div>
@@ -354,11 +354,21 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
           <div class="card col-6">
             <div class="section-title"><div><h3>🌱 이번 달 저축</h3><div class="desc">연금·청약·투자를 생활비와 분리해 확인합니다.</div></div><span class="badge">자산으로 보기</span></div>
             <div class="budget-grid">
-              <div class="budget-box"><label>이번 달 저축 목표</label><input id="savingsGoal" type="number" min="0" value="490000"><div class="small">원</div></div>
+              <div class="budget-box"><label>이번 달 저축 목표</label><input id="savingsGoal" type="number" min="0" value="3000000"><div class="small">원</div></div>
               <div class="budget-box"><label>예정 저축액</label><strong id="savingsPlanned">0원</strong><div class="small">아래 저축·투자 자동 합산</div></div>
-              <div class="budget-box"><label>목표까지 차이</label><strong id="savingsGap">0원</strong><div class="small">예정액 - 목표액</div></div>
+              <div class="budget-box"><label>목표까지 남은 금액</label><strong id="savingsGap">0원</strong><div class="small">목표액 - 실제 저축액</div></div>
             </div>
-            <div class="metric" style="margin-top:14px"><div><strong id="savingsGoalRate">0%</strong><small>저축 목표 달성률</small></div></div>
+            <div class="tip" style="margin-top:14px"><b>실제 저축 기록</b><small>날짜와 금액만 간단히 입력합니다. 한 달에 최대 5건까지 저장됩니다.</small></div>
+            <div class="toolbar" style="margin-top:10px">
+              <input id="savingsEntryDate" type="date" aria-label="저축 날짜">
+              <input id="savingsEntryAmount" type="number" min="0" placeholder="금액" aria-label="저축 금액">
+              <button class="btn" type="button" onclick="addSavingsEntry()">추가</button>
+            </div>
+            <div id="savingsEntryList" class="list" style="margin-top:10px"></div>
+            <div class="metric" style="margin-top:14px">
+              <div><strong id="actualSavingsTotal">0원</strong><small>입력한 저축 총액</small></div>
+              <div><strong id="savingsGoalRate">0%</strong><small>저축 목표 달성률</small></div>
+            </div>
           </div>
 
           <div class="card col-12">
@@ -864,10 +874,35 @@ $$(".side-income-input").forEach(el=>{
 
 const savingsGoalInput=$("#savingsGoal");
 if(savingsGoalInput){
- const saved=localStorage.getItem("v6SavingsGoal");
+ const saved=localStorage.getItem("v7SavingsGoal");
  if(saved!==null) savingsGoalInput.value=saved;
- savingsGoalInput.oninput=()=>{localStorage.setItem("v6SavingsGoal",savingsGoalInput.value);updateAllBudget()};
+ savingsGoalInput.oninput=()=>{localStorage.setItem("v7SavingsGoal",savingsGoalInput.value);updateAllBudget()};
 }
+
+let savingsEntries=get("v7SavingsEntries",[]);
+function renderSavingsEntries(){
+ const root=$("#savingsEntryList"); if(!root)return;
+ root.innerHTML=savingsEntries.length
+  ? savingsEntries.map((x,i)=>`<div class="row"><span class="badge">${x.date}</span><span class="txt"><b>${fmtWon(x.amount)}</b></span><button class="delete" type="button" onclick="removeSavingsEntry(${i})">삭제</button></div>`).join("")
+  : '<div class="small">아직 입력한 저축 내역이 없습니다.</div>';
+ updateAllBudget();
+}
+function addSavingsEntry(){
+ const date=$("#savingsEntryDate")?.value;
+ const amount=+($("#savingsEntryAmount")?.value||0);
+ if(!date||amount<=0){alert("날짜와 금액을 입력해 주세요.");return}
+ if(savingsEntries.length>=5){alert("저축 내역은 한 달에 최대 5건까지 입력할 수 있어요.");return}
+ savingsEntries.push({date,amount});
+ set("v7SavingsEntries",savingsEntries);
+ $("#savingsEntryAmount").value="";
+ renderSavingsEntries();
+}
+function removeSavingsEntry(i){
+ savingsEntries.splice(i,1);
+ set("v7SavingsEntries",savingsEntries);
+ renderSavingsEntries();
+}
+if($("#savingsEntryDate")) $("#savingsEntryDate").value=new Date().toISOString().slice(0,10);
 
 function updateDebitBudget(){
  const budget=+($("#debitBudget")?.value||0);
@@ -902,6 +937,7 @@ function updateAllBudget(){
  const sideIncome=$$(".side-income-input").reduce((s,e)=>s+(+e.value||0),0);
  const income=salary+sideIncome;
  const savingsGoal=+($("#savingsGoal")?.value||0);
+ const actualSavings=savingsEntries.reduce((s,x)=>s+(+x.amount||0),0);
  const living=livingTransfers + variable + debitSpent;
  const remain=income-living-savings;
 
@@ -914,14 +950,16 @@ function updateAllBudget(){
  if($("#livingExpenseTotal")) livingExpenseTotal.textContent=fmtWon(living);
  if($("#savingsTotal")) savingsTotal.textContent=fmtWon(savings);
  if($("#savingsPlanned")) savingsPlanned.textContent=fmtWon(savings);
- if($("#savingsGap")) savingsGap.textContent=fmtWon(savings-savingsGoal);
- if($("#savingsGoalRate")) savingsGoalRate.textContent=savingsGoal?Math.round(savings/savingsGoal*100)+"%":"0%";
+ if($("#actualSavingsTotal")) actualSavingsTotal.textContent=fmtWon(actualSavings);
+ if($("#savingsGap")) savingsGap.textContent=fmtWon(Math.max(savingsGoal-actualSavings,0));
+ if($("#savingsGoalRate")) savingsGoalRate.textContent=savingsGoal?Math.round(actualSavings/savingsGoal*100)+"%":"0%";
  if($("#remainingCash")) remainingCash.textContent=fmtWon(remain);
  if($("#livingRate")) livingRate.textContent=income?Math.round(living/income*100)+"%":"0%";
  if($("#savingRate")) savingRate.textContent=income?Math.round(savings/income*100)+"%":"0%";
  updateDebitBudget();
 }
 renderTransfers();
+renderSavingsEntries();
 updateCardDue();
 updateDebitBudget();
 updateAllBudget();
