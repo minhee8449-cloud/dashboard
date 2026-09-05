@@ -338,9 +338,17 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
               <div><strong id="savingsTotal">0원</strong><small>전체 저축</small></div>
             </div>
             <div class="metric" style="margin-top:10px">
-              <div><strong id="remainingCash">0원</strong><small>총수입 - 생활지출 - 저축·투자</small></div>
+              <div><strong id="remainingCash">0원</strong><small>총수입 + 이월잔액 - 고정지출 - 생활비지출 - 전체저축</small></div>
               <div><strong id="livingRate">0%</strong><small>수입 대비 생활지출 비율</small></div>
               <div><strong id="savingRate">0%</strong><small>수입 대비 저축·투자 비율</small></div>
+            </div>
+          </div>
+
+          <div class="card col-12">
+            <div class="section-title"><div><h3>↪️ 이월잔액</h3><div class="desc">지난달부터 통장에 남아 있던 돈입니다. 이번 달 수입에는 포함하지 않고, 사용 가능한 돈에만 더합니다.</div></div><span class="badge">수입 아님</span></div>
+            <div class="budget-grid">
+              <div class="budget-box"><label>이월잔액</label><input id="carryoverBalance" type="number" min="0" value="500000"><div class="small">원</div></div>
+              <div class="budget-box"><label>이번 달 사용 가능 금액</label><strong id="availableFunds">0원</strong><div class="small">총수입 + 이월잔액</div></div>
             </div>
           </div>
 
@@ -894,6 +902,13 @@ if(savingsGoalInput){
  savingsGoalInput.oninput=()=>{localStorage.setItem("v7SavingsGoal",savingsGoalInput.value);updateAllBudget()};
 }
 
+const carryoverInput=$("#carryoverBalance");
+if(carryoverInput){
+ const saved=localStorage.getItem("v9CarryoverBalance");
+ if(saved!==null) carryoverInput.value=saved;
+ carryoverInput.oninput=()=>{localStorage.setItem("v9CarryoverBalance",carryoverInput.value);updateAllBudget()};
+}
+
 function renderSavingsEntries(){
  const root=$("#savingsEntryList"); if(!root)return;
  root.innerHTML=savingsEntries.length
@@ -953,6 +968,8 @@ function updateAllBudget(){
  const salary=$$(".income-input").reduce((s,e)=>s+(+e.value||0),0);
  const sideIncome=$$(".side-income-input").reduce((s,e)=>s+(+e.value||0),0);
  const income=salary+sideIncome;
+ const carryover=+($("#carryoverBalance")?.value||0);
+ const available=income+carryover;
  const savingsGoal=+($("#savingsGoal")?.value||0);
  const fixedSavingsAmount=490000;
  const variableSavings=savingsEntries.reduce((s,x)=>s+(+x.amount||0),0);
@@ -960,12 +977,13 @@ function updateAllBudget(){
  const livingBudget=+($("#debitTransfer")?.value||0);
  const living=livingTransfers + variable + debitSpent;
  const livingForRatio=fixedExpenses+variable+debitSpent;
- const remain=income-fixedExpenses-livingBudget-actualSavings;
+ const remain=available-fixedExpenses-livingBudget-actualSavings;
 
  if($("#variableTotal")) variableTotal.textContent=fmtWon(variable+debitSpent);
  if($("#livingTransferTotal")) livingTransferTotal.textContent=fmtWon(livingTransfers);
  if($("#monthlyKnownTotal")) monthlyKnownTotal.textContent=fmtWon(living);
  if($("#incomeTotal")) incomeTotal.textContent=fmtWon(income);
+ if($("#availableFunds")) availableFunds.textContent=fmtWon(available);
  if($("#salaryTotal")) salaryTotal.textContent=fmtWon(salary);
  if($("#sideIncomeTotal")) sideIncomeTotal.textContent=fmtWon(sideIncome);
  if($("#livingExpenseTotal")) livingExpenseTotal.textContent=fmtWon(fixedExpenses);
