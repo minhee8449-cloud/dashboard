@@ -333,6 +333,8 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
               <div><strong id="incomeTotal">0원</strong><small>총수입</small></div>
               <div><strong id="livingExpenseTotal">0원</strong><small>고정지출</small></div>
               <div><strong id="livingBudgetTotal">0원</strong><small>생활비지출 · 체크카드 이체액</small></div>
+              <div><strong id="fixedSavingsSummary">490,000원</strong><small>고정저축</small></div>
+              <div><strong id="variableSavingsSummary">0원</strong><small>변동저축</small></div>
               <div><strong id="savingsTotal">0원</strong><small>전체 저축</small></div>
             </div>
             <div class="metric" style="margin-top:10px">
@@ -965,6 +967,8 @@ function updateAllBudget(){
  if($("#sideIncomeTotal")) sideIncomeTotal.textContent=fmtWon(sideIncome);
  if($("#livingExpenseTotal")) livingExpenseTotal.textContent=fmtWon(fixedExpenses);
  if($("#livingBudgetTotal")) livingBudgetTotal.textContent=fmtWon(livingBudget);
+ if($("#fixedSavingsSummary")) fixedSavingsSummary.textContent=fmtWon(fixedSavingsAmount);
+ if($("#variableSavingsSummary")) variableSavingsSummary.textContent=fmtWon(variableSavings);
  if($("#savingsTotal")) savingsTotal.textContent=fmtWon(actualSavings);
  if($("#savingsPlanned")) savingsPlanned.textContent=fmtWon(savings);
  if($("#actualSavingsTotal")) actualSavingsTotal.textContent=fmtWon(variableSavings);
