@@ -323,11 +323,11 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
         <div class="hero"><h3>💳 우리집 가계부 · 25일 시작</h3><p>수입 → 생활지출 → 저축·투자 → 남는 돈 순서로 한눈에 보고, 매일 쓰지 않고 월급날 중심으로 관리해요.</p></div>
         <div class="grid">
           <div class="card col-12">
-            <div class="section-title"><div><h3>💰 이번 달 수입</h3><div class="desc">월급과 기타 수입을 입력하면 총수입이 자동 계산됩니다.</div></div><span class="badge">25일 입력</span></div>
+            <div class="section-title"><div><h3>💰 이번 달 수입</h3><div class="desc">부부 월급과 아래 부수입을 합쳐 총수입을 자동 계산합니다.</div></div><span class="badge">25일 입력</span></div>
             <div class="budget-grid">
               <div class="budget-box"><label>내 월급</label><input id="incomeMine" class="income-input" type="number" min="0" value="0"><div class="small">원</div></div>
               <div class="budget-box"><label>남편 월급</label><input id="incomeHusband" class="income-input" type="number" min="0" value="0"><div class="small">원</div></div>
-              <div class="budget-box"><label>기타 수입</label><input id="incomeOther" class="income-input" type="number" min="0" value="0"><div class="small">원</div></div>
+              <div class="budget-box"><label>월급 합계</label><strong id="salaryTotal">0원</strong><div class="small">부부 월급</div></div>
             </div>
             <div class="metric" style="margin-top:14px">
               <div><strong id="incomeTotal">0원</strong><small>총수입</small></div>
@@ -339,6 +339,26 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
               <div><strong id="livingRate">0%</strong><small>수입 대비 생활지출 비율</small></div>
               <div><strong id="savingRate">0%</strong><small>수입 대비 저축·투자 비율</small></div>
             </div>
+          </div>
+
+          <div class="card col-6">
+            <div class="section-title"><div><h3>✨ 이번 달 부수입</h3><div class="desc">생긴 달에만 간단히 합계로 입력합니다.</div></div><span class="badge">있을 때만</span></div>
+            <div class="budget-grid">
+              <div class="budget-box"><label>블로그·콘텐츠</label><input id="sideBlog" class="side-income-input" type="number" min="0" value="0"><div class="small">원</div></div>
+              <div class="budget-box"><label>상여·환급·캐시백</label><input id="sideBonus" class="side-income-input" type="number" min="0" value="0"><div class="small">원</div></div>
+              <div class="budget-box"><label>기타 부수입</label><input id="sideOther" class="side-income-input" type="number" min="0" value="0"><div class="small">원</div></div>
+            </div>
+            <div class="metric" style="margin-top:14px"><div><strong id="sideIncomeTotal">0원</strong><small>부수입 합계</small></div></div>
+          </div>
+
+          <div class="card col-6">
+            <div class="section-title"><div><h3>🌱 이번 달 저축</h3><div class="desc">연금·청약·투자를 생활비와 분리해 확인합니다.</div></div><span class="badge">자산으로 보기</span></div>
+            <div class="budget-grid">
+              <div class="budget-box"><label>이번 달 저축 목표</label><input id="savingsGoal" type="number" min="0" value="490000"><div class="small">원</div></div>
+              <div class="budget-box"><label>예정 저축액</label><strong id="savingsPlanned">0원</strong><div class="small">아래 저축·투자 자동 합산</div></div>
+              <div class="budget-box"><label>목표까지 차이</label><strong id="savingsGap">0원</strong><div class="small">예정액 - 목표액</div></div>
+            </div>
+            <div class="metric" style="margin-top:14px"><div><strong id="savingsGoalRate">0%</strong><small>저축 목표 달성률</small></div></div>
           </div>
 
           <div class="card col-12">
@@ -369,7 +389,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
 
             <div class="tip">
               <b>자동 연결</b>
-              <small>각 은행은 해당 세부항목과 연결되어 있습니다. 삼성(국민)·현대(SC)는 카드별 고정결제의 결제예정액을 입력하면 같은 금액이 자동 표시됩니다. 은행의 ‘송금 완료’를 체크하면 연결된 개별 항목이 자동 체크되고, 연결 항목 중 하나를 해제하면 해당 은행 체크도 자동으로 풀립니다.</small>
+              <small>각 은행은 해당 세부항목과 연결되어 있습니다. 은행의 ‘송금 완료’를 체크하면 연결된 개별 항목이 자동 체크되고, 연결 항목 중 하나를 해제하면 해당 은행 체크도 자동으로 풀립니다.</small>
             </div>
           </div>
 
@@ -587,8 +607,8 @@ function renderWebinarChecks(){const root=$("#webinarChecklist");if(!root)return
 const transferDefaults=[
  {group:"보험·연금",items:[
   ["insurance","보험",180000,"living","","my_nonghyup"],
-  ["child_ins1","아이 보험 1",60000,"living","","my_woori"],
-  ["child_ins2","아이 보험 2",60000,"living","","my_woori"],
+  ["child_ins1","아이 보험 1",60000,"living","",null],
+  ["child_ins2","아이 보험 2",60000,"living","",null],
   ["mirae_pension","연금 (미래)",100000,"saving","저축/자산","my_mirae"],
   ["dental_woori","치치 치아보험 (우리)",20000,"living","","husband_woori"],
   ["pension_sc","치치 연금 (SC)",100000,"saving","저축/자산","husband_sc"],
@@ -615,8 +635,8 @@ const transferDefaults=[
   ["toss_stock","토스증권",30000,"saving","저축/자산",null],
   ["upbit","업비트",100000,"saving","저축/자산","my_kbank"],
   ["subscription","청약",20000,"saving","월 2만원","my_kb"],
-  ["royoon_sub","로윤청약",20000,"saving","월 2만원","my_woori"],
-  ["jiwoo_sub","지우청약",20000,"saving","월 2만원","my_woori"]
+  ["royoon_sub","로윤청약",20000,"saving","월 2만원",null],
+  ["jiwoo_sub","지우청약",20000,"saving","월 2만원",null]
  ]},
  {group:"아이·교육",items:[
   ["pickup","등하원비",1000000,"living","","my_mom_mg"],
@@ -666,10 +686,8 @@ function getTransferRows(){
 
 const accountBankDefs={
  my:[
-  {id:"my_samsung_kb",name:"삼성(국민)",amountSource:"card:samsung",links:[]},
   {id:"my_toss",name:"토스",amount:1970000,links:["housing_loan","kindergarten","yuna","daycare"]},
   {id:"my_nonghyup",name:"농협",amount:180000,links:["insurance"]},
-  {id:"my_woori",name:"우리",amount:160000,links:["child_ins1","child_ins2","royoon_sub","jiwoo_sub"]},
   {id:"my_kb",name:"국민",amount:20000,links:["subscription"]},
   {id:"my_kakao",name:"카카오뱅크",amount:50000,links:["sukgyeong"]},
   {id:"my_woori_dues",name:"우리은행(계비)",amount:100000,links:["parents"]},
@@ -679,7 +697,6 @@ const accountBankDefs={
   {id:"my_mirae",name:"미래에셋",amount:100000,links:["mirae_pension"]}
  ],
  husband:[
-  {id:"husband_hyundai_sc",name:"현대(SC)",amountSource:"card:hyundai",links:[]},
   {id:"husband_woori",name:"우리",amount:20000,links:["dental_woori"]},
   {id:"husband_nonghyup",name:"농협",amount:180000,links:["car_ins_nh","chichi_ins_nh"]},
   {id:"husband_kakao",name:"카카오",amount:120000,links:["country","alumni"]},
@@ -690,15 +707,6 @@ const accountBankDefs={
 };
 let accountBankState=get("v4AccountBankState",{});
 
-function getBankAmount(bank){
-  if(bank.amountSource && bank.amountSource.startsWith("card:")){
-    const card=bank.amountSource.split(":")[1];
-    const input=document.querySelector(`.card-due[data-card="${card}"]`);
-    return +(input?.value||0);
-  }
-  return +(bank.amount||0);
-}
-
 function renderOneAccountBanks(rootId,defs){
  const root=$("#"+rootId); if(!root)return;
  root.innerHTML=defs.map(bank=>{
@@ -708,7 +716,7 @@ function renderOneAccountBanks(rootId,defs){
    accountBankState[bank.id]=done;
    return `<div class="bank-transfer-box">
      <h4>${bank.name}</h4>
-     <div class="bank-total">${fmtWon(getBankAmount(bank))}</div>
+     <div class="bank-total">${fmtWon(bank.amount)}</div>
      <label class="bank-master">
        <input class="checkbox account-bank-check" data-bank-id="${bank.id}" type="checkbox" ${done?"checked":""}>
        <span>${bank.name} 송금 완료</span>
@@ -721,8 +729,8 @@ function renderBankTransfers(){
  renderOneAccountBanks("myBankTransferGrid",accountBankDefs.my);
  renderOneAccountBanks("husbandBankTransferGrid",accountBankDefs.husband);
 
- const myTotal=accountBankDefs.my.reduce((s,x)=>s+getBankAmount(x),0);
- const husbandTotal=accountBankDefs.husband.reduce((s,x)=>s+getBankAmount(x),0);
+ const myTotal=accountBankDefs.my.reduce((s,x)=>s+x.amount,0);
+ const husbandTotal=accountBankDefs.husband.reduce((s,x)=>s+x.amount,0);
  if($("#myBankTotal"))myBankTotal.textContent=fmtWon(myTotal);
  if($("#husbandBankTotal"))husbandBankTotal.textContent=fmtWon(husbandTotal);
  if($("#allBankTotal"))allBankTotal.textContent=fmtWon(myTotal+husbandTotal);
@@ -829,7 +837,7 @@ syncDebitLinkedChecks();
 $$(".card-due").forEach(el=>{
  const k="v3CardDue_"+el.dataset.card;
  const s=localStorage.getItem(k); if(s!==null) el.value=s;
- el.oninput=()=>{localStorage.setItem(k,el.value);updateCardDue();renderBankTransfers()}
+ el.oninput=()=>{localStorage.setItem(k,el.value);updateCardDue()}
 });
 function updateCardDue(){
  const total=$$(".card-due").reduce((s,e)=>s+(+e.value||0),0);
@@ -847,6 +855,19 @@ $$(".income-input").forEach(el=>{
  const s=localStorage.getItem(k); if(s!==null) el.value=s;
  el.oninput=()=>{localStorage.setItem(k,el.value);updateAllBudget()}
 });
+
+$$(".side-income-input").forEach(el=>{
+ const k="v6SideIncome_"+el.id;
+ const s=localStorage.getItem(k); if(s!==null) el.value=s;
+ el.oninput=()=>{localStorage.setItem(k,el.value);updateAllBudget()}
+});
+
+const savingsGoalInput=$("#savingsGoal");
+if(savingsGoalInput){
+ const saved=localStorage.getItem("v6SavingsGoal");
+ if(saved!==null) savingsGoalInput.value=saved;
+ savingsGoalInput.oninput=()=>{localStorage.setItem("v6SavingsGoal",savingsGoalInput.value);updateAllBudget()};
+}
 
 function updateDebitBudget(){
  const budget=+($("#debitBudget")?.value||0);
@@ -877,7 +898,10 @@ function updateAllBudget(){
  const savings=rows.filter(x=>x.type==="saving").reduce((s,x)=>s+x.amount,0);
  const variable=$$(".variable-spend").reduce((s,e)=>s+(+e.value||0),0);
  const debitSpent=+($("#debitSpent")?.value||0);
- const income=$$(".income-input").reduce((s,e)=>s+(+e.value||0),0);
+ const salary=$$(".income-input").reduce((s,e)=>s+(+e.value||0),0);
+ const sideIncome=$$(".side-income-input").reduce((s,e)=>s+(+e.value||0),0);
+ const income=salary+sideIncome;
+ const savingsGoal=+($("#savingsGoal")?.value||0);
  const living=livingTransfers + variable + debitSpent;
  const remain=income-living-savings;
 
@@ -885,8 +909,13 @@ function updateAllBudget(){
  if($("#livingTransferTotal")) livingTransferTotal.textContent=fmtWon(livingTransfers);
  if($("#monthlyKnownTotal")) monthlyKnownTotal.textContent=fmtWon(living);
  if($("#incomeTotal")) incomeTotal.textContent=fmtWon(income);
+ if($("#salaryTotal")) salaryTotal.textContent=fmtWon(salary);
+ if($("#sideIncomeTotal")) sideIncomeTotal.textContent=fmtWon(sideIncome);
  if($("#livingExpenseTotal")) livingExpenseTotal.textContent=fmtWon(living);
  if($("#savingsTotal")) savingsTotal.textContent=fmtWon(savings);
+ if($("#savingsPlanned")) savingsPlanned.textContent=fmtWon(savings);
+ if($("#savingsGap")) savingsGap.textContent=fmtWon(savings-savingsGoal);
+ if($("#savingsGoalRate")) savingsGoalRate.textContent=savingsGoal?Math.round(savings/savingsGoal*100)+"%":"0%";
  if($("#remainingCash")) remainingCash.textContent=fmtWon(remain);
  if($("#livingRate")) livingRate.textContent=income?Math.round(living/income*100)+"%":"0%";
  if($("#savingRate")) savingRate.textContent=income?Math.round(savings/income*100)+"%":"0%";
