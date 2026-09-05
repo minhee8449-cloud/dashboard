@@ -332,7 +332,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
             <div class="metric" style="margin-top:14px">
               <div><strong id="incomeTotal">0원</strong><small>총수입</small></div>
               <div><strong id="livingExpenseTotal">0원</strong><small>생활지출</small></div>
-              <div><strong id="savingsTotal">0원</strong><small>저축·투자 예정</small></div>
+              <div><strong id="savingsTotal">0원</strong><small>이번 달 실제 저축</small></div>
             </div>
             <div class="metric" style="margin-top:10px">
               <div><strong id="remainingCash">0원</strong><small>총수입 - 생활지출 - 저축·투자</small></div>
@@ -939,7 +939,7 @@ function updateAllBudget(){
  const savingsGoal=+($("#savingsGoal")?.value||0);
  const actualSavings=savingsEntries.reduce((s,x)=>s+(+x.amount||0),0);
  const living=livingTransfers + variable + debitSpent;
- const remain=income-living-savings;
+ const remain=income-living-actualSavings;
 
  if($("#variableTotal")) variableTotal.textContent=fmtWon(variable+debitSpent);
  if($("#livingTransferTotal")) livingTransferTotal.textContent=fmtWon(livingTransfers);
@@ -948,14 +948,14 @@ function updateAllBudget(){
  if($("#salaryTotal")) salaryTotal.textContent=fmtWon(salary);
  if($("#sideIncomeTotal")) sideIncomeTotal.textContent=fmtWon(sideIncome);
  if($("#livingExpenseTotal")) livingExpenseTotal.textContent=fmtWon(living);
- if($("#savingsTotal")) savingsTotal.textContent=fmtWon(savings);
+ if($("#savingsTotal")) savingsTotal.textContent=fmtWon(actualSavings);
  if($("#savingsPlanned")) savingsPlanned.textContent=fmtWon(savings);
  if($("#actualSavingsTotal")) actualSavingsTotal.textContent=fmtWon(actualSavings);
  if($("#savingsGap")) savingsGap.textContent=fmtWon(Math.max(savingsGoal-actualSavings,0));
  if($("#savingsGoalRate")) savingsGoalRate.textContent=savingsGoal?Math.round(actualSavings/savingsGoal*100)+"%":"0%";
  if($("#remainingCash")) remainingCash.textContent=fmtWon(remain);
  if($("#livingRate")) livingRate.textContent=income?Math.round(living/income*100)+"%":"0%";
- if($("#savingRate")) savingRate.textContent=income?Math.round(savings/income*100)+"%":"0%";
+ if($("#savingRate")) savingRate.textContent=income?Math.round(actualSavings/income*100)+"%":"0%";
  updateDebitBudget();
 }
 renderTransfers();
