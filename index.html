@@ -331,7 +331,8 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
             </div>
             <div class="metric" style="margin-top:14px">
               <div><strong id="incomeTotal">0원</strong><small>총수입</small></div>
-              <div><strong id="livingExpenseTotal">0원</strong><small>생활지출</small></div>
+              <div><strong id="livingExpenseTotal">0원</strong><small>고정지출</small></div>
+              <div><strong id="livingBudgetTotal">0원</strong><small>생활비지출 · 체크카드 이체액</small></div>
               <div><strong id="savingsTotal">0원</strong><small>전체 저축</small></div>
             </div>
             <div class="metric" style="margin-top:10px">
@@ -358,7 +359,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
               <div class="budget-box"><label>기본 저축액</label><strong id="savingsPlanned">490,000원</strong><div class="small">매월 25일 자동 등록</div></div>
               <div class="budget-box"><label>목표까지 남은 금액</label><strong id="savingsGap">0원</strong><div class="small">목표액 - 실제 저축액</div></div>
             </div>
-            <div class="tip" style="margin-top:14px"><b>이번 달 저축 기록</b><small>25일 기본 저축 49만 원은 자동 등록되고, 추가 저축만 입력합니다. 한 달에 최대 5건까지 저장됩니다.</small></div>
+            <div class="tip" style="margin-top:14px"><b>변동 저축 기록</b><small>고정저축 49만 원 이외에 추가로 저축한 날짜와 금액만 입력합니다. 한 달에 최대 5건까지 저장됩니다.</small></div>
             <div class="toolbar" style="margin-top:10px">
               <input id="savingsEntryDate" type="date" aria-label="저축 날짜">
               <input id="savingsEntryAmount" type="number" min="0" placeholder="금액" aria-label="저축 금액">
@@ -366,7 +367,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
             </div>
             <div id="savingsEntryList" class="list" style="margin-top:10px"></div>
             <div class="metric" style="margin-top:14px">
-              <div><strong id="actualSavingsTotal">0원</strong><small>입력한 저축 총액</small></div>
+              <div><strong id="actualSavingsTotal">0원</strong><small>변동 저축 합계</small></div>
               <div><strong id="savingsGoalRate">0%</strong><small>저축 목표 달성률</small></div>
             </div>
           </div>
@@ -671,17 +672,7 @@ const savingsCycleDate=getSavingsCycleDate();
 const savingsStorageKey="v8SavingsEntries_"+savingsCycleDate;
 let savingsEntries=get(savingsStorageKey,null);
 if(!Array.isArray(savingsEntries)) savingsEntries=get("v7SavingsEntries",[]);
-let fixedSavings=savingsEntries.find(x=>x.fixedBase===true);
-if(!fixedSavings){
- fixedSavings=savingsEntries.find(x=>x.date===savingsCycleDate && +x.amount===490000);
- if(fixedSavings) fixedSavings.fixedBase=true;
- else{
-  fixedSavings={date:savingsCycleDate,amount:490000,fixedBase:true};
-  savingsEntries.unshift(fixedSavings);
- }
-}
-fixedSavings.date=savingsCycleDate;
-fixedSavings.amount=490000;
+savingsEntries=savingsEntries.filter(x=>!x.fixedBase);
 set(savingsStorageKey,savingsEntries);
 
 function fmtWon(v){return Math.round(+v||0).toLocaleString("ko-KR")+"원"}
@@ -904,7 +895,7 @@ if(savingsGoalInput){
 function renderSavingsEntries(){
  const root=$("#savingsEntryList"); if(!root)return;
  root.innerHTML=savingsEntries.length
-  ? savingsEntries.map((x,i)=>`<div class="row"><span class="badge">${x.date}</span><span class="txt"><b>${fmtWon(x.amount)}</b>${x.fixedBase?' <small>기본 저축</small>':''}</span>${x.fixedBase?'':`<button class="delete" type="button" onclick="removeSavingsEntry(${i})">삭제</button>`}</div>`).join("")
+  ? savingsEntries.map((x,i)=>`<div class="row"><span class="badge">${x.date}</span><span class="txt"><b>${fmtWon(x.amount)}</b></span><button class="delete" type="button" onclick="removeSavingsEntry(${i})">삭제</button></div>`).join("")
   : '<div class="small">아직 입력한 저축 내역이 없습니다.</div>';
  updateAllBudget();
 }
@@ -919,7 +910,6 @@ function addSavingsEntry(){
  renderSavingsEntries();
 }
 function removeSavingsEntry(i){
- if(savingsEntries[i]?.fixedBase)return;
  savingsEntries.splice(i,1);
  set(savingsStorageKey,savingsEntries);
  renderSavingsEntries();
@@ -952,6 +942,7 @@ function updateAllBudget(){
 
  const rows=getTransferRows();
  const livingTransfers=rows.filter(x=>x.type==="living").reduce((s,x)=>s+x.amount,0);
+ const fixedExpenses=rows.filter(x=>x.type==="living"&&x.done).reduce((s,x)=>s+x.amount,0);
  const savings=rows.filter(x=>x.type==="saving").reduce((s,x)=>s+x.amount,0);
  const variable=$$(".variable-spend").reduce((s,e)=>s+(+e.value||0),0);
  const debitSpent=+($("#debitSpent")?.value||0);
@@ -959,9 +950,12 @@ function updateAllBudget(){
  const sideIncome=$$(".side-income-input").reduce((s,e)=>s+(+e.value||0),0);
  const income=salary+sideIncome;
  const savingsGoal=+($("#savingsGoal")?.value||0);
- const actualSavings=savingsEntries.reduce((s,x)=>s+(+x.amount||0),0);
+ const fixedSavingsAmount=490000;
+ const variableSavings=savingsEntries.reduce((s,x)=>s+(+x.amount||0),0);
+ const actualSavings=fixedSavingsAmount+variableSavings;
+ const livingBudget=+($("#debitTransfer")?.value||0);
  const living=livingTransfers + variable + debitSpent;
- const remain=income-living-actualSavings;
+ const remain=income-fixedExpenses-livingBudget-actualSavings;
 
  if($("#variableTotal")) variableTotal.textContent=fmtWon(variable+debitSpent);
  if($("#livingTransferTotal")) livingTransferTotal.textContent=fmtWon(livingTransfers);
@@ -969,10 +963,11 @@ function updateAllBudget(){
  if($("#incomeTotal")) incomeTotal.textContent=fmtWon(income);
  if($("#salaryTotal")) salaryTotal.textContent=fmtWon(salary);
  if($("#sideIncomeTotal")) sideIncomeTotal.textContent=fmtWon(sideIncome);
- if($("#livingExpenseTotal")) livingExpenseTotal.textContent=fmtWon(living);
+ if($("#livingExpenseTotal")) livingExpenseTotal.textContent=fmtWon(fixedExpenses);
+ if($("#livingBudgetTotal")) livingBudgetTotal.textContent=fmtWon(livingBudget);
  if($("#savingsTotal")) savingsTotal.textContent=fmtWon(actualSavings);
  if($("#savingsPlanned")) savingsPlanned.textContent=fmtWon(savings);
- if($("#actualSavingsTotal")) actualSavingsTotal.textContent=fmtWon(actualSavings);
+ if($("#actualSavingsTotal")) actualSavingsTotal.textContent=fmtWon(variableSavings);
  if($("#savingsGap")) savingsGap.textContent=fmtWon(Math.max(savingsGoal-actualSavings,0));
  if($("#savingsGoalRate")) savingsGoalRate.textContent=savingsGoal?Math.round(actualSavings/savingsGoal*100)+"%":"0%";
  if($("#remainingCash")) remainingCash.textContent=fmtWon(remain);
