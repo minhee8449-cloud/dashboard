@@ -675,7 +675,10 @@ let fixedSavings=savingsEntries.find(x=>x.fixedBase===true);
 if(!fixedSavings){
  fixedSavings=savingsEntries.find(x=>x.date===savingsCycleDate && +x.amount===490000);
  if(fixedSavings) fixedSavings.fixedBase=true;
- else savingsEntries.unshift({date:savingsCycleDate,amount:490000,fixedBase:true});
+ else{
+  fixedSavings={date:savingsCycleDate,amount:490000,fixedBase:true};
+  savingsEntries.unshift(fixedSavings);
+ }
 }
 fixedSavings.date=savingsCycleDate;
 fixedSavings.amount=490000;
