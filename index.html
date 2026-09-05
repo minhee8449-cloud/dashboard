@@ -331,7 +331,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
             </div>
             <div class="metric" style="margin-top:14px">
               <div><strong id="incomeTotal">0원</strong><small>총수입</small></div>
-              <div><strong id="livingExpenseTotal">0원</strong><small>고정지출</small></div>
+              <div><strong id="livingExpenseTotal">0원</strong><small>고정지출 · 계비·모임·카드값 포함</small></div>
               <div><strong id="livingBudgetTotal">0원</strong><small>생활비지출 · 체크카드 이체액</small></div>
               <div><strong id="fixedSavingsSummary">490,000원</strong><small>고정저축</small></div>
               <div><strong id="variableSavingsSummary">0원</strong><small>변동저축</small></div>
@@ -358,7 +358,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
             <div class="section-title"><div><h3>🌱 이번 달 저축</h3><div class="desc">연금·청약·투자를 생활비와 분리해 확인합니다.</div></div><span class="badge">자산으로 보기</span></div>
             <div class="budget-grid">
               <div class="budget-box"><label>이번 달 저축 목표</label><input id="savingsGoal" type="number" min="0" value="3000000"><div class="small">원</div></div>
-              <div class="budget-box"><label>기본 저축액</label><strong id="savingsPlanned">490,000원</strong><div class="small">매월 25일 자동 등록</div></div>
+              <div class="budget-box"><label>고정저축</label><strong id="savingsPlanned">490,000원</strong><div class="small">매월 49만 원 고정</div></div>
               <div class="budget-box"><label>목표까지 남은 금액</label><strong id="savingsGap">0원</strong><div class="small">목표액 - 실제 저축액</div></div>
             </div>
             <div class="tip" style="margin-top:14px"><b>변동 저축 기록</b><small>고정저축 49만 원 이외에 추가로 저축한 날짜와 금액만 입력합니다. 한 달에 최대 5건까지 저장됩니다.</small></div>
@@ -862,7 +862,7 @@ syncDebitLinkedChecks();
 $$(".card-due").forEach(el=>{
  const k="v3CardDue_"+el.dataset.card;
  const s=localStorage.getItem(k); if(s!==null) el.value=s;
- el.oninput=()=>{localStorage.setItem(k,el.value);updateCardDue()}
+ el.oninput=()=>{localStorage.setItem(k,el.value);updateCardDue();updateAllBudget()}
 });
 function updateCardDue(){
  const total=$$(".card-due").reduce((s,e)=>s+(+e.value||0),0);
@@ -944,8 +944,10 @@ function updateAllBudget(){
 
  const rows=getTransferRows();
  const livingTransfers=rows.filter(x=>x.type==="living").reduce((s,x)=>s+x.amount,0);
- const fixedExpenses=rows.filter(x=>x.type==="living"&&x.done).reduce((s,x)=>s+x.amount,0);
- const savings=rows.filter(x=>x.type==="saving").reduce((s,x)=>s+x.amount,0);
+ const livingBudgetIncludedIds=new Set(["swimming","eyelevel"]);
+ const checkedLivingTransfers=rows.filter(x=>x.type==="living"&&x.done&&x.id!=="samsung_nh"&&!livingBudgetIncludedIds.has(x.id)).reduce((s,x)=>s+x.amount,0);
+ const cardPayments=$$(".card-due").reduce((s,e)=>s+(+e.value||0),0);
+ const fixedExpenses=checkedLivingTransfers+cardPayments;
  const variable=$$(".variable-spend").reduce((s,e)=>s+(+e.value||0),0);
  const debitSpent=+($("#debitSpent")?.value||0);
  const salary=$$(".income-input").reduce((s,e)=>s+(+e.value||0),0);
@@ -957,6 +959,7 @@ function updateAllBudget(){
  const actualSavings=fixedSavingsAmount+variableSavings;
  const livingBudget=+($("#debitTransfer")?.value||0);
  const living=livingTransfers + variable + debitSpent;
+ const livingForRatio=fixedExpenses+variable+debitSpent;
  const remain=income-fixedExpenses-livingBudget-actualSavings;
 
  if($("#variableTotal")) variableTotal.textContent=fmtWon(variable+debitSpent);
@@ -970,12 +973,12 @@ function updateAllBudget(){
  if($("#fixedSavingsSummary")) fixedSavingsSummary.textContent=fmtWon(fixedSavingsAmount);
  if($("#variableSavingsSummary")) variableSavingsSummary.textContent=fmtWon(variableSavings);
  if($("#savingsTotal")) savingsTotal.textContent=fmtWon(actualSavings);
- if($("#savingsPlanned")) savingsPlanned.textContent=fmtWon(savings);
+ if($("#savingsPlanned")) savingsPlanned.textContent=fmtWon(fixedSavingsAmount);
  if($("#actualSavingsTotal")) actualSavingsTotal.textContent=fmtWon(variableSavings);
  if($("#savingsGap")) savingsGap.textContent=fmtWon(Math.max(savingsGoal-actualSavings,0));
  if($("#savingsGoalRate")) savingsGoalRate.textContent=savingsGoal?Math.round(actualSavings/savingsGoal*100)+"%":"0%";
  if($("#remainingCash")) remainingCash.textContent=fmtWon(remain);
- if($("#livingRate")) livingRate.textContent=income?Math.round(living/income*100)+"%":"0%";
+ if($("#livingRate")) livingRate.textContent=income?Math.round(livingForRatio/income*100)+"%":"0%";
  if($("#savingRate")) savingRate.textContent=income?Math.round(actualSavings/income*100)+"%":"0%";
  updateDebitBudget();
 }
