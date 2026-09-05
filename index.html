@@ -661,6 +661,7 @@ const transferDefaults=[
  ]}
 ];
 let transferState=get("v3TransferState",{});
+let savingsEntries=get("v7SavingsEntries",[]);
 
 function fmtWon(v){return Math.round(+v||0).toLocaleString("ko-KR")+"원"}
 
@@ -879,7 +880,6 @@ if(savingsGoalInput){
  savingsGoalInput.oninput=()=>{localStorage.setItem("v7SavingsGoal",savingsGoalInput.value);updateAllBudget()};
 }
 
-let savingsEntries=get("v7SavingsEntries",[]);
 function renderSavingsEntries(){
  const root=$("#savingsEntryList"); if(!root)return;
  root.innerHTML=savingsEntries.length
