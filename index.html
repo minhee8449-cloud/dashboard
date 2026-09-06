@@ -328,6 +328,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
               <div class="budget-box"><label>내 월급</label><input id="incomeMine" class="income-input" type="number" min="0" value="0"><div class="small">원</div></div>
               <div class="budget-box"><label>남편 월급</label><input id="incomeHusband" class="income-input" type="number" min="0" value="0"><div class="small">원</div></div>
               <div class="budget-box"><label>월급 합계</label><strong id="salaryTotal">0원</strong><div class="small">부부 월급</div></div>
+              <div class="budget-box"><label>부수입 합계</label><strong id="sideIncomeSummary">0원</strong><div class="small">아래 부수입 자동 반영</div></div>
             </div>
             <div class="metric" style="margin-top:14px">
               <div><strong id="incomeTotal">0원</strong><small>총수입</small></div>
@@ -986,6 +987,7 @@ function updateAllBudget(){
  if($("#availableFunds")) availableFunds.textContent=fmtWon(available);
  if($("#salaryTotal")) salaryTotal.textContent=fmtWon(salary);
  if($("#sideIncomeTotal")) sideIncomeTotal.textContent=fmtWon(sideIncome);
+ if($("#sideIncomeSummary")) sideIncomeSummary.textContent=fmtWon(sideIncome);
  if($("#livingExpenseTotal")) livingExpenseTotal.textContent=fmtWon(fixedExpenses);
  if($("#livingBudgetTotal")) livingBudgetTotal.textContent=fmtWon(livingBudget);
  if($("#fixedSavingsSummary")) fixedSavingsSummary.textContent=fmtWon(fixedSavingsAmount);
