@@ -79,12 +79,13 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
 .note{width:100%;min-height:150px;resize:vertical}
 .metric{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metric div{padding:14px;border:1px solid var(--line);border-radius:14px;text-align:center}.metric strong{font-size:22px;color:#2d6dbb;display:block}
 .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.news-item{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff}.news-item h4{margin:7px 0 8px}.news-item p{font-size:13px;line-height:1.6;color:#536175;margin:6px 0}.level{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800}.level.red{background:#ffe9e9;color:#b53939}.level.orange{background:#fff1df;color:#b56a16}.level.green{background:#e8f7ef;color:#26744f}.source{font-size:11px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:10px}.budget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.budget-box{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff}.budget-box label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}.budget-box input{width:100%;font-size:20px;font-weight:800}.budget-total{font-size:32px;font-weight:900;color:#2d6dbb}.budget-note{font-size:12px;color:var(--muted);line-height:1.6}
+.budget-month-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.budget-month-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.budget-month-controls select{min-width:150px;font-weight:800}.history-list{display:grid;gap:12px}.history-row{display:grid;grid-template-columns:90px 1fr;gap:12px;align-items:center}.history-label b{display:block}.history-label small{color:var(--muted)}.history-bars{display:grid;gap:6px}.history-bar{display:grid;grid-template-columns:58px 1fr 105px;gap:8px;align-items:center;font-size:12px}.history-track{height:10px;border-radius:999px;background:#edf1f6;overflow:hidden}.history-fill{height:100%;border-radius:999px}.history-fill.income{background:#4c91e5}.history-fill.expense{background:#e77cae}.history-fill.saving{background:#53b884}.history-empty{padding:14px;border:1px dashed var(--line);border-radius:14px;color:var(--muted);text-align:center}
 .modal-bg{position:fixed;inset:0;background:rgba(8,25,45,.42);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
 .modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:20px;box-shadow:0 25px 70px rgba(0,0,0,.25)}
 .modal h3{margin-top:0}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
 .small{font-size:12px;color:var(--muted)}
 @media(max-width:1100px){.app{grid-template-columns:88px 1fr}.brand h1,.brand small,.nav span,.sidebar-foot{display:none}.brand{justify-content:center}.nav button{text-align:center;font-size:0}.nav button::first-letter{font-size:20px}.port-groups{grid-template-columns:1fr 1fr}.template-grid{grid-template-columns:1fr}.col-8,.col-7,.col-6,.col-5,.col-4,.col-3{grid-column:span 12}}
-@media(max-width:720px){.app{display:block}.sidebar{position:static;height:auto;padding:10px}.brand{display:none}.nav{grid-template-columns:repeat(4,1fr)}.nav button{padding:10px 5px}.topbar{padding:0 15px}.clock{display:none}.content{padding:16px}.week-grid,.check-columns,.port-groups,.news-grid,.budget-grid{grid-template-columns:1fr}.grid{gap:12px}.travel-head{align-items:flex-start;flex-direction:column}}
+@media(max-width:720px){.app{display:block}.sidebar{position:static;height:auto;padding:10px}.brand{display:none}.nav{grid-template-columns:repeat(4,1fr)}.nav button{padding:10px 5px}.topbar{padding:0 15px}.clock{display:none}.content{padding:16px}.week-grid,.check-columns,.port-groups,.news-grid,.budget-grid{grid-template-columns:1fr}.grid{gap:12px}.travel-head{align-items:flex-start;flex-direction:column}.history-row{grid-template-columns:1fr}.history-bar{grid-template-columns:52px 1fr 88px}}
 
 .transfer-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
 .transfer-summary .sum-box{padding:15px;border:1px solid var(--line);border-radius:15px;background:#fff;text-align:center}
@@ -323,6 +324,20 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
         <div class="hero"><h3>💳 우리집 가계부 · 25일 시작</h3><p>수입 → 생활지출 → 저축·투자 → 남는 돈 순서로 한눈에 보고, 매일 쓰지 않고 월급날 중심으로 관리해요.</p></div>
         <div class="grid">
           <div class="card col-12">
+            <div class="budget-month-bar">
+              <div>
+                <h3 style="margin:0 0 5px">🗓️ 월별 가계부</h3>
+                <div id="budgetPeriodText" class="desc">25일~다음 달 24일 기준</div>
+              </div>
+              <div class="budget-month-controls">
+                <select id="budgetMonthSelect" aria-label="가계부 월 선택"></select>
+                <button class="btn" type="button" onclick="openCurrentBudgetMonth()">이번 달 장부 시작</button>
+              </div>
+            </div>
+            <div class="tip" style="margin-top:12px"><b id="budgetMonthStatus">월별 기록 준비 중</b><small>지난달 기록은 그대로 보관되고 선택한 월의 내용만 화면에 표시됩니다.</small></div>
+          </div>
+
+          <div class="card col-12">
             <div class="section-title"><div><h3>💰 이번 달 수입</h3><div class="desc">부부 월급과 아래 부수입을 합쳐 총수입을 자동 계산합니다.</div></div><span class="badge">25일 입력</span></div>
             <div class="budget-grid">
               <div class="budget-box"><label>내 월급</label><input id="incomeMine" class="income-input" type="number" min="0" value="0"><div class="small">원</div></div>
@@ -431,7 +446,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
             <table class="card-table">
               <thead><tr><th>카드</th><th>고정결제 내역</th><th>고정 합계</th><th>결제예정액</th></tr></thead>
               <tbody>
-                <tr><td><b>삼성(국민)</b></td><td>관리비 250,000 · 컬리페이 2,000 · 네이버 5,000 · 인터넷 30,000 · 정수기 17,000 · 영어학원 할부 180,000(이번 달 마지막)</td><td>484,000원</td><td><input class="card-due" data-card="samsung" type="number" min="0"></td></tr>
+                <tr><td><b>삼성(국민)</b></td><td id="samsungFixedDetail">관리비 250,000 · 컬리페이 2,000 · 네이버 5,000 · 인터넷 30,000 · 정수기 17,000 · 영어학원 할부 180,000(8월 마지막)</td><td id="samsungFixedTotal">484,000원</td><td><input class="card-due" data-card="samsung" type="number" min="0"></td></tr>
                 <tr><td><b>현대(SC)</b></td><td>도시가스 30,000 · 윌라 10,000 · 남편 핸드폰 40,000</td><td>80,000원</td><td><input class="card-due" data-card="hyundai" type="number" min="0"></td></tr>
                 <tr><td><b>신한</b></td><td>고정결제 추가 확인</td><td>-</td><td><input class="card-due" data-card="shinhan" type="number" min="0"></td></tr>
                 <tr><td><b>KB국민</b></td><td>고정결제 없음 · 할인용</td><td>-</td><td><input class="card-due" data-card="kb" type="number" min="0"></td></tr>
@@ -439,7 +454,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
               </tbody>
             </table>
             <div class="metric" style="margin-top:14px">
-              <div><strong>564,000원</strong><small>등록 카드 고정비</small></div>
+              <div><strong id="registeredCardFixed">564,000원</strong><small>등록 카드 고정비</small></div>
               <div><strong id="cardDueTotal">0원</strong><small>결제예정액 합계</small></div>
               <div><strong>279,000원</strong><small>농협 가족계좌 → 삼성카드</small></div>
             </div>
@@ -496,6 +511,11 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
             <div class="tip"><b>저축/투자</b><small>한투·토스증권·업비트·연금·청약은 생활소비와 분리해서 봅니다.</small></div>
             <div class="tip"><b>카드</b><small>남편 카드처럼 자주 확인하기 어려운 카드는 월 1회 ‘결제예정액’만 입력.</small></div>
             <textarea id="budgetMemo" class="note" placeholder="이번 달 특이사항 / 여행 / 큰 지출 / 다음 달 조정할 것"></textarea>
+          </div>
+
+          <div class="card col-12">
+            <div class="section-title"><div><h3>📊 월별 수입·지출·저축 추이</h3><div class="desc">저장된 월을 기준으로 비교합니다. 지출은 고정지출과 생활비 계좌 이체액의 합계입니다.</div></div><span class="badge">월별 자동 저장</span></div>
+            <div id="budgetHistoryChart" class="history-list"></div>
           </div>
         </div>
       </section>
@@ -679,8 +699,8 @@ function getSavingsCycleDate(ref=new Date()){
  const y=payday.getFullYear(),m=String(payday.getMonth()+1).padStart(2,"0"),d=String(payday.getDate()).padStart(2,"0");
  return `${y}-${m}-${d}`;
 }
-const savingsCycleDate=getSavingsCycleDate();
-const savingsStorageKey="v8SavingsEntries_"+savingsCycleDate;
+let savingsCycleDate=getSavingsCycleDate();
+let savingsStorageKey="v8SavingsEntries_"+savingsCycleDate;
 let savingsEntries=get(savingsStorageKey,null);
 if(!Array.isArray(savingsEntries)) savingsEntries=get("v7SavingsEntries",[]);
 savingsEntries=savingsEntries.filter(x=>!x.fixedBase);
@@ -1002,6 +1022,241 @@ function updateAllBudget(){
  if($("#savingRate")) savingRate.textContent=income?Math.round(actualSavings/income*100)+"%":"0%";
  updateDebitBudget();
 }
+
+const budgetMonthsKey="v10BudgetMonths";
+const budgetSelectedMonthKey="v10BudgetSelectedMonth";
+let budgetMonths=get(budgetMonthsKey,{});
+let selectedBudgetMonth=localStorage.getItem(budgetSelectedMonthKey)||"";
+let budgetApplying=false;
+let budgetSaveTimer=null;
+
+function budgetMonthKeyFromDate(ref=new Date()){
+ const payday=new Date(ref.getFullYear(),ref.getMonth(),25);
+ if(ref.getDate()<25)payday.setMonth(payday.getMonth()-1);
+ return `${payday.getFullYear()}-${String(payday.getMonth()+1).padStart(2,"0")}`;
+}
+function budgetMonthLabel(key){
+ const [y,m]=key.split("-").map(Number);
+ return `${y}년 ${m}월`;
+}
+function budgetPeriodLabel(key){
+ const [y,m]=key.split("-").map(Number);
+ const end=new Date(y,m,24);
+ return `${y}. ${m}. 25. ~ ${end.getFullYear()}. ${end.getMonth()+1}. 24.`;
+}
+function budgetCycleStorageKey(key){return "v8SavingsEntries_"+key+"-25"}
+function cloneBudgetValue(v){return JSON.parse(JSON.stringify(v||{}))}
+
+function budgetSummaryFromSnapshot(snap){
+ const state=snap.transferState||{};
+ const rows=[];
+ transferDefaults.forEach(g=>g.items.forEach(it=>{
+  const st=state[it[0]]||{};
+  rows.push({id:it[0],amount:st.amount!==undefined?+st.amount:+it[2],done:!!st.done,type:it[3]});
+ }));
+ const excluded=new Set(["samsung_nh","swimming","eyelevel"]);
+ const fixedTransfer=rows.filter(x=>x.type==="living"&&x.done&&!excluded.has(x.id)).reduce((s,x)=>s+x.amount,0);
+ const cardPayments=Object.values(snap.cardDue||{}).reduce((s,v)=>s+(+v||0),0);
+ const fixedExpenses=fixedTransfer+cardPayments;
+ const salary=Object.values(snap.income||{}).reduce((s,v)=>s+(+v||0),0);
+ const sideIncome=Object.values(snap.sideIncome||{}).reduce((s,v)=>s+(+v||0),0);
+ const income=salary+sideIncome;
+ const carryover=+(snap.carryover||0);
+ const livingBudget=+(snap.debit?.debitTransfer||0);
+ const variableSavings=(snap.savingsEntries||[]).reduce((s,x)=>s+(+x.amount||0),0);
+ const savings=490000+variableSavings;
+ const spending=fixedExpenses+livingBudget;
+ return {income,fixedExpenses,livingBudget,spending,savings,remaining:income+carryover-spending-savings};
+}
+
+function captureBudgetSnapshot(){
+ const income={},sideIncome={},cardDue={},variableSpend={};
+ $$(".income-input").forEach(el=>income[el.id]=+el.value||0);
+ $$(".side-income-input").forEach(el=>sideIncome[el.id]=+el.value||0);
+ $$(".card-due").forEach(el=>cardDue[el.dataset.card]=+el.value||0);
+ $$(".variable-spend").forEach(el=>variableSpend[el.dataset.key]=+el.value||0);
+ const snap={
+  income,sideIncome,cardDue,variableSpend,
+  transferState:cloneBudgetValue(transferState),
+  accountBankState:cloneBudgetValue(accountBankState),
+  savingsEntries:cloneBudgetValue(savingsEntries),
+  savingsGoal:+($("#savingsGoal")?.value||3000000),
+  carryover:+($("#carryoverBalance")?.value||0),
+  debit:{
+   debitBudget:+($("#debitBudget")?.value||0),
+   debitTransfer:+($("#debitTransfer")?.value||0),
+   debitSpent:+($("#debitSpent")?.value||0),
+   transferDone:!!$("#debitTransferDone")?.checked
+  },
+  memo:$("#budgetMemo")?.value||"",
+  updatedAt:new Date().toISOString()
+ };
+ snap.summary=budgetSummaryFromSnapshot(snap);
+ return snap;
+}
+
+function createNextBudgetSnapshot(previous){
+ const prev=previous||{};
+ const nextTransfer={};
+ transferDefaults.forEach(g=>g.items.forEach(it=>{
+  const old=(prev.transferState||{})[it[0]]||{};
+  if(old.amount!==undefined)nextTransfer[it[0]]={amount:+old.amount||0,done:false};
+ }));
+ const previousSummary=prev.summary||budgetSummaryFromSnapshot(prev);
+ const snap={
+  income:{incomeMine:0,incomeHusband:0},
+  sideIncome:{sideBlog:0,sideBonus:0,sideOther:0},
+  cardDue:{samsung:0,hyundai:0,shinhan:0,kb:0,lotte:0},
+  variableSpend:{food:0,shopping:0,costco:0,edu:0,event:0,other:0},
+  transferState:nextTransfer,
+  accountBankState:{},
+  savingsEntries:[],
+  savingsGoal:+(prev.savingsGoal||3000000),
+  carryover:Math.max(0,+(previousSummary.remaining||0)),
+  debit:{debitBudget:0,debitTransfer:0,debitSpent:0,transferDone:false},
+  memo:"",
+  createdAt:new Date().toISOString()
+ };
+ snap.summary=budgetSummaryFromSnapshot(snap);
+ return snap;
+}
+
+function renderBudgetMonthControls(){
+ const select=$("#budgetMonthSelect");
+ if(!select)return;
+ const keys=Object.keys(budgetMonths).sort();
+ select.innerHTML=keys.map(key=>`<option value="${key}" ${key===selectedBudgetMonth?"selected":""}>${budgetMonthLabel(key)}</option>`).join("");
+ if($("#budgetPeriodText"))budgetPeriodText.textContent=budgetPeriodLabel(selectedBudgetMonth)+" 월급 주기";
+ if($("#budgetMonthStatus"))budgetMonthStatus.textContent=`${budgetMonthLabel(selectedBudgetMonth)} 장부 · 자동 저장 중`;
+}
+
+function updateMonthlyFixedLabels(key){
+ const hasTuitionInstallment=key==="2026-08";
+ if($("#samsungFixedDetail"))samsungFixedDetail.textContent=hasTuitionInstallment
+  ? "관리비 250,000 · 컬리페이 2,000 · 네이버 5,000 · 인터넷 30,000 · 정수기 17,000 · 영어학원 할부 180,000(8월 마지막)"
+  : "관리비 250,000 · 컬리페이 2,000 · 네이버 5,000 · 인터넷 30,000 · 정수기 17,000";
+ if($("#samsungFixedTotal"))samsungFixedTotal.textContent=hasTuitionInstallment?"484,000원":"304,000원";
+ if($("#registeredCardFixed"))registeredCardFixed.textContent=hasTuitionInstallment?"564,000원":"384,000원";
+}
+
+function renderBudgetHistory(){
+ const root=$("#budgetHistoryChart"); if(!root)return;
+ const keys=Object.keys(budgetMonths).sort();
+ if(!keys.length){root.innerHTML='<div class="history-empty">저장된 월별 기록이 없습니다.</div>';return}
+ const rows=keys.map(key=>{
+  const snap=budgetMonths[key], summary=snap.summary||budgetSummaryFromSnapshot(snap);
+  return {key,...summary};
+ });
+ const max=Math.max(1,...rows.flatMap(x=>[x.income,x.spending,x.savings]));
+ root.innerHTML=rows.map(x=>`<div class="history-row">
+  <div class="history-label"><b>${budgetMonthLabel(x.key)}</b><small>${budgetPeriodLabel(x.key)}</small></div>
+  <div class="history-bars">
+   <div class="history-bar"><span>수입</span><div class="history-track"><div class="history-fill income" style="width:${Math.round(x.income/max*100)}%"></div></div><b>${fmtWon(x.income)}</b></div>
+   <div class="history-bar"><span>지출</span><div class="history-track"><div class="history-fill expense" style="width:${Math.round(x.spending/max*100)}%"></div></div><b>${fmtWon(x.spending)}</b></div>
+   <div class="history-bar"><span>저축</span><div class="history-track"><div class="history-fill saving" style="width:${Math.round(x.savings/max*100)}%"></div></div><b>${fmtWon(x.savings)}</b></div>
+  </div>
+ </div>`).join("");
+}
+
+function saveSelectedBudgetMonth(){
+ if(budgetApplying||!selectedBudgetMonth)return;
+ budgetMonths[selectedBudgetMonth]=captureBudgetSnapshot();
+ set(budgetMonthsKey,budgetMonths);
+ localStorage.setItem(budgetSelectedMonthKey,selectedBudgetMonth);
+ set(savingsStorageKey,savingsEntries);
+ renderBudgetHistory();
+}
+function scheduleBudgetSave(){
+ if(budgetApplying)return;
+ clearTimeout(budgetSaveTimer);
+ budgetSaveTimer=setTimeout(saveSelectedBudgetMonth,40);
+}
+
+function applyBudgetSnapshot(key){
+ const snap=budgetMonths[key]; if(!snap)return;
+ budgetApplying=true;
+ selectedBudgetMonth=key;
+ localStorage.setItem(budgetSelectedMonthKey,key);
+ savingsCycleDate=key+"-25";
+ savingsStorageKey=budgetCycleStorageKey(key);
+ transferState=cloneBudgetValue(snap.transferState);
+ accountBankState=cloneBudgetValue(snap.accountBankState);
+ savingsEntries=Array.isArray(snap.savingsEntries)?cloneBudgetValue(snap.savingsEntries):[];
+ $$(".income-input").forEach(el=>el.value=snap.income?.[el.id]??0);
+ $$(".side-income-input").forEach(el=>el.value=snap.sideIncome?.[el.id]??0);
+ $$(".card-due").forEach(el=>el.value=snap.cardDue?.[el.dataset.card]??0);
+ $$(".variable-spend").forEach(el=>el.value=snap.variableSpend?.[el.dataset.key]??0);
+ if($("#savingsGoal"))savingsGoal.value=snap.savingsGoal??3000000;
+ if($("#carryoverBalance"))carryoverBalance.value=snap.carryover??0;
+ ["debitBudget","debitTransfer","debitSpent"].forEach(id=>{if($("#"+id))$("#"+id).value=snap.debit?.[id]??0});
+ if($("#debitTransferDone"))debitTransferDone.checked=!!snap.debit?.transferDone;
+ if($("#budgetMemo"))budgetMemo.value=snap.memo||"";
+ if($("#savingsEntryDate"))savingsEntryDate.value=key+"-25";
+ renderBudgetMonthControls();
+ updateMonthlyFixedLabels(key);
+ renderTransfers();
+ renderSavingsEntries();
+ updateCardDue();
+ updateDebitBudget();
+ updateAllBudget();
+ budgetApplying=false;
+ renderBudgetHistory();
+}
+
+function migrateLegacyBudgetMonths(){
+ if(Object.keys(budgetMonths).length)return;
+ const legacyKey="2026-08";
+ const legacy=captureBudgetSnapshot();
+ const legacySavings=get(budgetCycleStorageKey(legacyKey),get("v7SavingsEntries",[]));
+ legacy.savingsEntries=Array.isArray(legacySavings)?legacySavings.filter(x=>!x.fixedBase):[];
+ legacy.summary=budgetSummaryFromSnapshot(legacy);
+ legacy.migratedFromLegacy=true;
+ set("v10BudgetLegacyBackup_2026-08",legacy);
+ budgetMonths[legacyKey]=legacy;
+ const currentKey=budgetMonthKeyFromDate();
+ if(!budgetMonths[currentKey])budgetMonths[currentKey]=createNextBudgetSnapshot(legacy);
+ selectedBudgetMonth=currentKey;
+ set(budgetMonthsKey,budgetMonths);
+ localStorage.setItem(budgetSelectedMonthKey,selectedBudgetMonth);
+}
+
+function ensureCurrentBudgetMonth(){
+ const currentKey=budgetMonthKeyFromDate();
+ if(!budgetMonths[currentKey]){
+  const previousKey=Object.keys(budgetMonths).filter(k=>k<currentKey).sort().pop();
+  budgetMonths[currentKey]=createNextBudgetSnapshot(previousKey?budgetMonths[previousKey]:null);
+  set(budgetMonthsKey,budgetMonths);
+  selectedBudgetMonth=currentKey;
+ }
+ if(!budgetMonths[selectedBudgetMonth])selectedBudgetMonth=currentKey;
+}
+
+function openCurrentBudgetMonth(){
+ saveSelectedBudgetMonth();
+ const currentKey=budgetMonthKeyFromDate();
+ if(!budgetMonths[currentKey]){
+  const previousKey=Object.keys(budgetMonths).filter(k=>k<currentKey).sort().pop();
+  budgetMonths[currentKey]=createNextBudgetSnapshot(previousKey?budgetMonths[previousKey]:null);
+  set(budgetMonthsKey,budgetMonths);
+ }
+ applyBudgetSnapshot(currentKey);
+}
+
+migrateLegacyBudgetMonths();
+ensureCurrentBudgetMonth();
+if($("#budgetMonthSelect"))budgetMonthSelect.onchange=()=>{
+ saveSelectedBudgetMonth();
+ applyBudgetSnapshot(budgetMonthSelect.value);
+};
+const budgetSection=$("#budget");
+if(budgetSection){
+ budgetSection.addEventListener("input",scheduleBudgetSave);
+ budgetSection.addEventListener("change",scheduleBudgetSave);
+ budgetSection.addEventListener("click",e=>{if(e.target.closest("button"))setTimeout(scheduleBudgetSave,0)});
+}
+window.addEventListener("beforeunload",saveSelectedBudgetMonth);
+document.addEventListener("visibilitychange",()=>{if(document.hidden)saveSelectedBudgetMonth()});
+applyBudgetSnapshot(selectedBudgetMonth);
 renderTransfers();
 renderSavingsEntries();
 updateCardDue();
