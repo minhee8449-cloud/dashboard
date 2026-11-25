@@ -552,6 +552,7 @@ input:focus,textarea:focus{border-color:#86afe1;box-shadow:0 0 0 3px #e5f0ff}
 </div>
 
 <script>
+let budgetReady=false;
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
 const set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
@@ -563,7 +564,8 @@ const pageMeta={
  blog:["블로그 포털","오늘의 한편 글감과 진행 상태를 관리해요."],
  english:["영어 포털","업무 표현과 복습 내용을 모아두어요."],
  ideas:["아이디어 보드","떠오른 생각을 바로 저장해요."],
- budget:["가계부","최근 지출 흐름과 월 생활비 목표를 관리해요."]
+ budget:["가계부","최근 지출 흐름과 월 생활비 목표를 관리해요."],
+ assets:["자산관리","계좌별 자산과 저축 목표를 관리해요."]
 };
 $$(".nav button").forEach(b=>b.onclick=()=>{ updateAssetActivation(); $$(".nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");$$(".page").forEach(x=>x.classList.remove("active"));$("#"+b.dataset.page).classList.add("active");$("#pageTitle").textContent=pageMeta[b.dataset.page][0];$("#pageSubtitle").textContent=pageMeta[b.dataset.page][1]});
 function tick(){const n=new Date();$("#clock").textContent=n.toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});$("#today").textContent=n.toLocaleDateString("ko-KR",{year:"numeric",month:"long",day:"numeric",weekday:"long"})} tick();setInterval(tick,1000);
@@ -999,6 +1001,7 @@ if(debitDone){
 }
 
 function renderAnnualSavings2026(){
+ if(!budgetReady)return;
  const goal=Number($("#annualSavingsGoal2026")?.value)||0;
  const months=typeof budgetMonths!=="undefined"?budgetMonths:{};
  const selected=typeof selectedBudgetMonth!=="undefined"?selectedBudgetMonth:"";
@@ -1070,7 +1073,7 @@ function updateAllBudget(){
  if($("#savingRate")) savingRate.textContent=income?Math.round(actualSavings/income*100)+"%":"0%";
  updateDebitBudget();
  renderAnnualSavings2026();
- if(typeof renderAssets==="function")renderAssets();
+ if(budgetReady)renderAssets();
 }
 
 const budgetMonthsKey="v10BudgetMonths";
@@ -1367,6 +1370,7 @@ if(annualSavingsGoal2026Input){
 }
 migrateLegacyBudgetMonths();
 ensureCurrentBudgetMonth();
+budgetReady=true;
 if($("#budgetMonthSelect"))budgetMonthSelect.onchange=()=>{
  saveSelectedBudgetMonth();
  applyBudgetSnapshot(budgetMonthSelect.value);
