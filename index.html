@@ -567,7 +567,7 @@ const pageMeta={
  budget:["가계부","최근 지출 흐름과 월 생활비 목표를 관리해요."],
  assets:["자산관리","계좌별 자산과 저축 목표를 관리해요."]
 };
-$$(".nav button").forEach(b=>b.onclick=()=>{ updateAssetActivation(); $$(".nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");$$(".page").forEach(x=>x.classList.remove("active"));$("#"+b.dataset.page).classList.add("active");$("#pageTitle").textContent=pageMeta[b.dataset.page][0];$("#pageSubtitle").textContent=pageMeta[b.dataset.page][1]});
+$$(".nav button").forEach(b=>b.onclick=()=>{ $$(".nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");$$(".page").forEach(x=>x.classList.remove("active"));$("#"+b.dataset.page).classList.add("active");$("#pageTitle").textContent=pageMeta[b.dataset.page][0];$("#pageSubtitle").textContent=pageMeta[b.dataset.page][1]});
 function tick(){const n=new Date();$("#clock").textContent=n.toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});$("#today").textContent=n.toLocaleDateString("ko-KR",{year:"numeric",month:"long",day:"numeric",weekday:"long"})} tick();setInterval(tick,1000);
 $$(".tab").forEach(b=>b.onclick=()=>{const g=b.dataset.panelGroup;$$(`.tab[data-panel-group="${g}"]`).forEach(x=>x.classList.remove("active"));b.classList.add("active"); const ids=$$(`.tab[data-panel-group="${g}"]`).map(x=>x.dataset.panel);ids.forEach(id=>$("#"+id)?.classList.remove("active"));$("#"+b.dataset.panel)?.classList.add("active")});
 
@@ -1072,8 +1072,8 @@ function updateAllBudget(){
  if($("#livingRate")) livingRate.textContent=income?Math.round(livingForRatio/income*100)+"%":"0%";
  if($("#savingRate")) savingRate.textContent=income?Math.round(actualSavings/income*100)+"%":"0%";
  updateDebitBudget();
- renderAnnualSavings2026();
- if(budgetReady)renderAssets();
+ try{renderAnnualSavings2026()}catch(e){console.error("Annual savings",e)}
+ if(budgetReady){try{renderAssets()}catch(e){console.error("Asset rendering",e)}}
 }
 
 const budgetMonthsKey="v10BudgetMonths";
